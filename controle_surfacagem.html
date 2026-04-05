@@ -1,0 +1,303 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif}
+.app{padding:1rem;max-width:780px;margin:0 auto}
+.hdr{display:flex;align-items:center;gap:10px;padding-bottom:1rem;border-bottom:.5px solid var(--color-border-tertiary);margin-bottom:1.25rem}
+.hdr-icon{width:34px;height:34px;background:#FAEEDA;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr h1{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.hdr p{font-size:12px;color:var(--color-text-secondary);margin-top:1px}
+.tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:3px}
+.tab{flex:1;padding:7px;font-size:13px;font-weight:500;border:none;background:transparent;color:var(--color-text-secondary);border-radius:6px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.tab.on{background:var(--color-background-primary);color:var(--color-text-primary);border:.5px solid var(--color-border-tertiary)}
+.ops{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1rem}
+.op{padding:14px 8px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif}
+.op:hover{background:var(--color-background-secondary)}
+.op.sel{border:1.5px solid #BA7517;background:#FAEEDA}
+.op-avatar{width:44px;height:44px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500}
+.op-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.op.sel .op-name{color:#854F0B}
+.scan-box{background:var(--color-background-secondary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;margin-bottom:1rem}
+.scan-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.scan-row{display:flex;gap:8px}
+.scan-input{flex:1;font-family:'DM Mono',monospace;font-size:15px;padding:9px 12px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);outline:none;transition:border-color .15s}
+.scan-input:focus{border-color:#EF9F27;box-shadow:0 0 0 2px rgba(239,159,39,.12)}
+.btn-reg{padding:9px 18px;font-size:13px;font-weight:500;background:#FAEEDA;color:#854F0B;border:.5px solid #EF9F27;border-radius:var(--border-radius-md);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .15s}
+.btn-reg:hover{background:#FAC775}
+.scan-hint{font-size:11px;color:var(--color-text-secondary);margin-top:6px}
+.flash{padding:8px 12px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;margin-bottom:1rem;display:none}
+.flash.ok{background:#EAF3DE;color:#3B6D11;display:block}
+.flash.err{background:#FCEBEB;color:#A32D2D;display:block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px}
+.stat-n{font-size:22px;font-weight:500;color:var(--color-text-primary);line-height:1}
+.stat-l{font-size:11px;color:var(--color-text-secondary);margin-top:3px}
+.list-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.list-title{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em}
+.badge{font-size:11px;background:var(--color-background-secondary);color:var(--color-text-secondary);padding:2px 8px;border-radius:99px;border:.5px solid var(--color-border-tertiary)}
+.item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:6px}
+.item-ped{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--color-text-primary);min-width:90px}
+.item-info{flex:1;min-width:0}
+.item-nome{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.item-dt{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+.item-del{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);opacity:.45;font-size:14px;padding:2px 4px;border-radius:4px;transition:opacity .15s}
+.item-del:hover{opacity:1;color:#E24B4A}
+.empty{text-align:center;color:var(--color-text-secondary);font-size:13px;padding:24px;border:.5px dashed var(--color-border-tertiary);border-radius:var(--border-radius-md)}
+.rpt-panel{background:var(--color-background-secondary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;margin-bottom:1rem}
+.rpt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.lbl{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em}
+input[type=date],select{font-family:'DM Sans',sans-serif;font-size:13px;padding:7px 10px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);outline:none;width:100%}
+input[type=date]:focus,select:focus{border-color:#EF9F27}
+.rpt-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-buscar{padding:8px 16px;font-size:13px;font-weight:500;background:#FAEEDA;color:#854F0B;border:.5px solid #EF9F27;border-radius:var(--border-radius-md);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-buscar:hover{background:#FAC775}
+.btn-pdf{padding:8px 16px;font-size:13px;font-weight:500;background:#EAF3DE;color:#3B6D11;border:.5px solid #639922;border-radius:var(--border-radius-md);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-pdf:hover{background:#C0DD97}
+.btn-pdf:disabled{opacity:.4;cursor:not-allowed}
+.rpt-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:5px}
+.rpt-ped{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--color-text-primary);min-width:90px}
+.rpt-nome{font-size:12px;font-weight:500;color:var(--color-text-primary);flex:1}
+.rpt-dt{font-size:11px;color:var(--color-text-secondary);white-space:nowrap}
+@media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}.rpt-grid{grid-template-columns:1fr}}
+</style>
+
+<div class="app">
+  <div class="hdr">
+    <div class="hdr-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Controle de serviços — surfaçagem</h1>
+      <p id="relogio">--/--/---- --:--:--</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="goTab('reg')">Registrar</button>
+    <button class="tab" onclick="goTab('rpt')">Relatório / pesquisa</button>
+  </div>
+
+  <!-- ABA REGISTRAR -->
+  <div id="tab-reg">
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Operador</div>
+    <div class="ops">
+      <button class="op" onclick="selOp('Percília')" id="op-Percília">
+        <div class="op-avatar" style="background:#FBEAF0;color:#993556">PE</div>
+        <div class="op-name">Percília</div>
+      </button>
+      <button class="op" onclick="selOp('Matheus')" id="op-Matheus">
+        <div class="op-avatar" style="background:#E1F5EE;color:#0F6E56">MA</div>
+        <div class="op-name">Matheus</div>
+      </button>
+    </div>
+
+    <div class="scan-box">
+      <div class="scan-label">Código do pedido</div>
+      <div class="scan-row">
+        <input class="scan-input" id="scan" placeholder="Bipe ou digite o código..." autocomplete="off" />
+        <button class="btn-reg" onclick="registrar()">Registrar</button>
+      </div>
+      <div class="scan-hint">Pressione Enter após bipar para registrar automaticamente</div>
+    </div>
+
+    <div class="flash" id="flash"></div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="tot">0</div><div class="stat-l">Total hoje</div></div>
+      <div class="stat"><div class="stat-n" id="totSem">0</div><div class="stat-l">Esta semana</div></div>
+      <div class="stat"><div class="stat-n" id="totGeral">0</div><div class="stat-l">Total geral</div></div>
+    </div>
+
+    <div class="list-hdr">
+      <span class="list-title">Últimos registros</span>
+      <span class="badge" id="badge">0</span>
+    </div>
+    <div id="lista"></div>
+  </div>
+
+  <!-- ABA RELATÓRIO -->
+  <div id="tab-rpt" style="display:none">
+    <div class="rpt-panel">
+      <div class="rpt-grid">
+        <div class="fg"><label class="lbl">Data inicial</label><input type="date" id="dtIni" /></div>
+        <div class="fg"><label class="lbl">Data final</label><input type="date" id="dtFim" /></div>
+        <div class="fg" style="grid-column:1/-1"><label class="lbl">Operador</label>
+          <select id="filtOp">
+            <option value="">Todos</option>
+            <option>Percília</option>
+            <option>Matheus</option>
+          </select>
+        </div>
+      </div>
+      <div class="rpt-btns">
+        <button class="btn-buscar" onclick="buscar()">Pesquisar</button>
+        <button class="btn-pdf" id="btnPdf" onclick="gerarPdf()" disabled>Baixar PDF</button>
+      </div>
+    </div>
+    <div id="rpt-res"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script>
+let op = null;
+let registros = [];
+let rptFiltrados = [];
+
+function tick(){
+  const n=new Date(), p=v=>String(v).padStart(2,'0');
+  document.getElementById('relogio').textContent=
+    `${p(n.getDate())}/${p(n.getMonth()+1)}/${n.getFullYear()} ${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+}
+tick(); setInterval(tick,1000);
+
+const hoje = new Date().toISOString().split('T')[0];
+const inicioSemana = (()=>{const d=new Date();d.setDate(d.getDate()-d.getDay());return d.toISOString().split('T')[0]})();
+document.getElementById('dtIni').value = inicioSemana;
+document.getElementById('dtFim').value = hoje;
+
+function goTab(t){
+  document.getElementById('tab-reg').style.display = t==='reg'?'':'none';
+  document.getElementById('tab-rpt').style.display = t==='rpt'?'':'none';
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',(t==='reg'&&i===0)||(t==='rpt'&&i===1)));
+}
+
+function selOp(nome){
+  op=nome;
+  document.querySelectorAll('.op').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('op-'+nome).classList.add('sel');
+  document.getElementById('scan').focus();
+}
+
+document.getElementById('scan').addEventListener('keydown',e=>{if(e.key==='Enter')registrar()});
+
+function flash(msg,tipo){
+  const el=document.getElementById('flash');
+  el.textContent=msg; el.className='flash '+tipo;
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.className='flash',2500);
+}
+
+function fmtDt(iso){const[y,m,d]=iso.split('T')[0].split('-');return`${d}/${m}/${y}`;}
+function fmtHr(iso){const d=new Date(iso),p=v=>String(v).padStart(2,'0');return`${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;}
+
+function registrar(){
+  const codigo=document.getElementById('scan').value.trim();
+  if(!op){flash('Selecione um operador primeiro.','err');return;}
+  if(!codigo){flash('Bipe ou informe o código do pedido.','err');return;}
+  registros.unshift({id:Date.now(),pedido:codigo,operador:op,ts:new Date().toISOString()});
+  document.getElementById('scan').value='';
+  document.getElementById('scan').focus();
+  flash(`Pedido ${codigo} registrado por ${op}.`,'ok');
+  renderLista(); atualizaStats();
+}
+
+function remover(id){
+  registros=registros.filter(r=>r.id!==id);
+  renderLista(); atualizaStats();
+}
+
+function atualizaStats(){
+  document.getElementById('tot').textContent=registros.filter(r=>r.ts.startsWith(hoje)).length;
+  document.getElementById('totSem').textContent=registros.filter(r=>r.ts.split('T')[0]>=inicioSemana).length;
+  document.getElementById('totGeral').textContent=registros.length;
+  document.getElementById('badge').textContent=registros.length;
+}
+
+const cores={Percília:'#993556',Matheus:'#0F6E56'};
+const bgCores={Percília:'#FBEAF0',Matheus:'#E1F5EE'};
+const iniciais={Percília:'PE',Matheus:'MA'};
+
+function renderLista(){
+  const lista=document.getElementById('lista');
+  if(!registros.length){lista.innerHTML='<div class="empty">Nenhum serviço registrado ainda.</div>';return;}
+  lista.innerHTML=registros.slice(0,50).map(r=>`
+    <div class="item">
+      <div style="width:30px;height:30px;border-radius:50%;background:${bgCores[r.operador]||'#eee'};color:${cores[r.operador]||'#333'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0">${iniciais[r.operador]||'??'}</div>
+      <span class="item-ped">${r.pedido}</span>
+      <div class="item-info">
+        <div class="item-nome">${r.operador}</div>
+        <div class="item-dt">${fmtDt(r.ts)} às ${fmtHr(r.ts)}</div>
+      </div>
+      <button class="item-del" onclick="remover(${r.id})">✕</button>
+    </div>`).join('');
+}
+
+function buscar(){
+  const ini=document.getElementById('dtIni').value;
+  const fim=document.getElementById('dtFim').value;
+  const fop=document.getElementById('filtOp').value;
+  if(!ini||!fim)return;
+  rptFiltrados=registros.filter(r=>{
+    const d=r.ts.split('T')[0];
+    return d>=ini&&d<=fim&&(!fop||r.operador===fop);
+  });
+  document.getElementById('btnPdf').disabled=rptFiltrados.length===0;
+  const res=document.getElementById('rpt-res');
+  if(!rptFiltrados.length){res.innerHTML='<div class="empty">Nenhum registro encontrado para o período.</div>';return;}
+  res.innerHTML=`<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">${rptFiltrados.length} registro(s) encontrado(s)</div>`+
+    rptFiltrados.map(r=>`
+      <div class="rpt-item">
+        <span class="rpt-ped">${r.pedido}</span>
+        <span class="rpt-nome">${r.operador}</span>
+        <span class="rpt-dt">${fmtDt(r.ts)} ${fmtHr(r.ts)}</span>
+      </div>`).join('');
+}
+
+function gerarPdf(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF();
+  const ini=document.getElementById('dtIni').value;
+  const fim=document.getElementById('dtFim').value;
+  const fop=document.getElementById('filtOp').value||'Todos';
+
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(14);
+  doc.text('Relatório de Serviços — Surfaçagem',14,18);
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+  doc.setTextColor(120);
+  doc.text(`Período: ${fmtDt(ini+'T00:00:00')} a ${fmtDt(fim+'T00:00:00')}   |   Operador: ${fop}   |   Total: ${rptFiltrados.length} registros`,14,25);
+  doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`,14,30);
+  doc.setDrawColor(200);
+  doc.line(14,33,196,33);
+
+  doc.autoTable({
+    startY:37,
+    head:[['#','Pedido','Operador','Data','Hora']],
+    body:rptFiltrados.map((r,i)=>[i+1,r.pedido,r.operador,fmtDt(r.ts),fmtHr(r.ts)]),
+    styles:{font:'helvetica',fontSize:9,cellPadding:3},
+    headStyles:{fillColor:[186,117,23],textColor:255,fontStyle:'bold'},
+    alternateRowStyles:{fillColor:[255,249,240]},
+    columnStyles:{0:{cellWidth:10,halign:'center'},1:{cellWidth:45},2:{cellWidth:35},3:{cellWidth:30},4:{cellWidth:25}},
+    margin:{left:14,right:14}
+  });
+
+  const porOp={};
+  rptFiltrados.forEach(r=>{porOp[r.operador]=(porOp[r.operador]||0)+1;});
+  const y=doc.lastAutoTable.finalY+10;
+  doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(0);
+  doc.text('Resumo por operador',14,y);
+  doc.autoTable({
+    startY:y+4,
+    head:[['Operador','Registros']],
+    body:Object.entries(porOp),
+    styles:{font:'helvetica',fontSize:9,cellPadding:3},
+    headStyles:{fillColor:[153,61,86],textColor:255,fontStyle:'bold'},
+    columnStyles:{0:{cellWidth:60},1:{cellWidth:30,halign:'center'}},
+    margin:{left:14,right:14}
+  });
+
+  doc.save(`surfacagem_${ini}_${fim}.pdf`);
+}
+
+renderLista();
+atualizaStats();
+</script>
