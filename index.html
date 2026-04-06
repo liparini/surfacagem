@@ -1,155 +1,193 @@
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=DM+Mono:wght@600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif}
-.app{padding:clamp(.75rem,3vw,1.5rem);max-width:780px;margin:0 auto;width:100%}
-.hdr{display:flex;align-items:center;gap:10px;padding-bottom:1rem;border-bottom:.5px solid var(--color-border-tertiary);margin-bottom:1.25rem;flex-wrap:wrap}
-.hdr-icon{width:34px;height:34px;background:#FAEEDA;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hdr-text{flex:1;min-width:0}
-.hdr h1{font-size:clamp(13px,3.5vw,15px);font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hdr p{font-size:clamp(10px,2.5vw,12px);color:var(--color-text-secondary);margin-top:1px}
-.tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:3px}
-.tab{flex:1;padding:clamp(6px,2vw,8px);font-size:clamp(12px,3vw,13px);font-weight:500;border:none;background:transparent;color:var(--color-text-secondary);border-radius:6px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
-.tab.on{background:var(--color-background-primary);color:var(--color-text-primary);border:.5px solid var(--color-border-tertiary)}
+html{font-size:18px}
+body{font-family:'DM Sans',sans-serif;background:transparent}
+.app{padding:16px;max-width:780px;margin:0 auto;width:100%}
 
-/* OPERADORES — 2 colunas sempre, cresce com espaço */
-.ops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(6px,2vw,12px);margin-bottom:1rem}
-.op{padding:clamp(10px,3vw,16px) 8px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif}
-.op:hover{background:var(--color-background-secondary)}
-.op.sel{border:1.5px solid #BA7517;background:#FAEEDA}
-.op-avatar{width:clamp(36px,8vw,48px);height:clamp(36px,8vw,48px);border-radius:50%;margin:0 auto clamp(4px,1.5vw,8px);display:flex;align-items:center;justify-content:center;font-size:clamp(12px,3vw,16px);font-weight:500}
-.op-name{font-size:clamp(12px,3vw,14px);font-weight:500;color:var(--color-text-primary)}
-.op.sel .op-name{color:#854F0B}
+/* HEADER */
+.hdr{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:.5px solid var(--color-border-tertiary);margin-bottom:20px}
+.hdr-icon{width:48px;height:48px;background:#FAEEDA;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr h1{font-size:18px;font-weight:700;color:var(--color-text-primary);line-height:1.2}
+.hdr p{font-size:14px;color:var(--color-text-secondary);margin-top:3px;font-weight:400}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--color-background-secondary);border-radius:14px;padding:4px}
+.tab{flex:1;padding:14px 8px;font-size:16px;font-weight:600;border:none;background:transparent;color:var(--color-text-secondary);border-radius:10px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.tab.on{background:var(--color-background-primary);color:#854F0B;border:.5px solid #EF9F27}
+
+/* SECAO LABEL */
+.sec-label{font-size:13px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+
+/* OPERADORES */
+.ops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:24px}
+.op{padding:20px 10px 16px;border:2px solid var(--color-border-secondary);border-radius:16px;background:var(--color-background-primary);cursor:pointer;text-align:center;transition:all .2s;font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent}
+.op:active{transform:scale(.97)}
+.op.sel{border:3px solid #BA7517;background:#FAEEDA;box-shadow:0 0 0 4px rgba(186,117,23,.12)}
+.op-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+.op-name{font-size:18px;font-weight:700;color:var(--color-text-primary)}
+.op-sub{font-size:13px;color:var(--color-text-secondary);margin-top:3px;font-weight:400}
+.op.sel .op-name{color:#633806}
+.op-check{display:none;width:24px;height:24px;border-radius:50%;background:#BA7517;margin:8px auto 0;align-items:center;justify-content:center}
+.op.sel .op-check{display:flex}
 
 /* SCAN */
-.scan-box{background:var(--color-background-secondary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:clamp(.75rem,3vw,1rem);margin-bottom:1rem}
-.scan-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
-.scan-row{display:flex;gap:8px;flex-wrap:wrap}
-.scan-input{flex:1;min-width:120px;font-family:'DM Mono',monospace;font-size:clamp(13px,3.5vw,15px);padding:clamp(8px,2vw,10px) 12px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);outline:none;transition:border-color .15s}
-.scan-input:focus{border-color:#EF9F27;box-shadow:0 0 0 2px rgba(239,159,39,.12)}
-.btn-reg{padding:clamp(8px,2vw,10px) clamp(12px,4vw,18px);font-size:clamp(12px,3vw,13px);font-weight:500;background:#FAEEDA;color:#854F0B;border:.5px solid #EF9F27;border-radius:var(--border-radius-md);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .15s;width:100%}
-@media(min-width:400px){.btn-reg{width:auto}}
-.btn-reg:hover{background:#FAC775}
-.scan-hint{font-size:11px;color:var(--color-text-secondary);margin-top:6px}
+.scan-box{background:var(--color-background-secondary);border:1.5px solid var(--color-border-secondary);border-radius:16px;padding:16px;margin-bottom:20px}
+.scan-title{font-size:16px;font-weight:700;color:var(--color-text-primary);margin-bottom:4px}
+.scan-sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.5}
+.scan-input{width:100%;font-family:'DM Mono',monospace;font-size:22px;font-weight:600;padding:16px 14px;border:2px solid var(--color-border-secondary);border-radius:12px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none;transition:border-color .2s;letter-spacing:.05em;margin-bottom:10px}
+.scan-input:focus{border-color:#EF9F27;box-shadow:0 0 0 3px rgba(239,159,39,.15)}
+.scan-input::placeholder{font-size:15px;font-weight:400;letter-spacing:0;opacity:.6}
+.btn-reg{width:100%;padding:18px;font-size:18px;font-weight:700;background:#BA7517;color:#fff;border:none;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:10px;-webkit-tap-highlight-color:transparent}
+.btn-reg:active{background:#854F0B;transform:scale(.98)}
+.btn-reg:hover{background:#854F0B}
+.btn-icon{width:22px;height:22px;flex-shrink:0}
 
 /* FLASH */
-.flash{padding:8px 12px;border-radius:var(--border-radius-md);font-size:clamp(12px,3vw,13px);font-weight:500;margin-bottom:1rem;display:none}
-.flash.ok{background:#EAF3DE;color:#3B6D11;display:block}
-.flash.err{background:#FCEBEB;color:#A32D2D;display:block}
+.flash{padding:14px 16px;border-radius:12px;font-size:16px;font-weight:600;margin-bottom:16px;display:none;line-height:1.4}
+.flash.ok{background:#EAF3DE;color:#27500A;border:1.5px solid #639922;display:flex;align-items:center;gap:10px}
+.flash.err{background:#FCEBEB;color:#791F1F;border:1.5px solid #E24B4A;display:flex;align-items:center;gap:10px}
 
 /* STATS */
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(6px,2vw,10px);margin-bottom:1.25rem}
-.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:clamp(8px,2.5vw,12px)}
-.stat-n{font-size:clamp(18px,5vw,24px);font-weight:500;color:var(--color-text-primary);line-height:1}
-.stat-l{font-size:clamp(10px,2.5vw,12px);color:var(--color-text-secondary);margin-top:3px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:24px}
+.stat{background:var(--color-background-secondary);border-radius:12px;padding:14px 10px;text-align:center}
+.stat-n{font-size:32px;font-weight:700;color:var(--color-text-primary);line-height:1}
+.stat-l{font-size:12px;font-weight:600;color:var(--color-text-secondary);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
 
 /* LISTA */
-.list-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.list-title{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em}
-.badge{font-size:11px;background:var(--color-background-secondary);color:var(--color-text-secondary);padding:2px 8px;border-radius:99px;border:.5px solid var(--color-border-tertiary)}
-.item{display:flex;align-items:center;gap:clamp(6px,2vw,10px);padding:clamp(8px,2vw,10px) clamp(8px,2.5vw,12px);background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:6px}
-.item-ped{font-family:'DM Mono',monospace;font-size:clamp(11px,2.8vw,13px);font-weight:500;color:var(--color-text-primary);min-width:clamp(70px,18vw,90px);max-width:clamp(70px,22vw,110px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.list-title{font-size:14px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em}
+.badge{font-size:13px;font-weight:600;background:var(--color-background-secondary);color:var(--color-text-secondary);padding:4px 12px;border-radius:99px;border:.5px solid var(--color-border-secondary)}
+.item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--color-background-primary);border:1.5px solid var(--color-border-tertiary);border-radius:14px;margin-bottom:8px}
+.item-avatar{width:44px;height:44px;min-width:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
 .item-info{flex:1;min-width:0}
-.item-nome{font-size:clamp(12px,3vw,13px);font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.item-dt{font-size:clamp(10px,2.5vw,11px);color:var(--color-text-secondary);margin-top:1px}
-.item-del{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);opacity:.45;font-size:clamp(13px,3.5vw,15px);padding:4px 6px;border-radius:4px;transition:opacity .15s;flex-shrink:0}
-.item-del:hover{opacity:1;color:#E24B4A}
-.empty{text-align:center;color:var(--color-text-secondary);font-size:13px;padding:24px;border:.5px dashed var(--color-border-tertiary);border-radius:var(--border-radius-md)}
+.item-ped{font-family:'DM Mono',monospace;font-size:17px;font-weight:600;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-nome{font-size:14px;font-weight:600;color:var(--color-text-secondary);margin-top:2px}
+.item-dt{font-size:12px;color:var(--color-text-secondary);margin-top:2px;font-weight:400}
+.item-del{background:var(--color-background-secondary);border:1px solid var(--color-border-secondary);cursor:pointer;color:var(--color-text-secondary);font-size:18px;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.item-del:active{background:#FCEBEB;color:#A32D2D;border-color:#E24B4A}
+.empty{text-align:center;color:var(--color-text-secondary);font-size:15px;padding:32px 16px;border:2px dashed var(--color-border-tertiary);border-radius:14px;line-height:1.6;font-weight:400}
+.empty strong{display:block;font-size:17px;font-weight:700;margin-bottom:6px;color:var(--color-text-primary)}
 
 /* RELATÓRIO */
-.rpt-panel{background:var(--color-background-secondary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:clamp(.75rem,3vw,1rem);margin-bottom:1rem}
-.rpt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2vw,12px);margin-bottom:10px}
-@media(max-width:360px){.rpt-grid{grid-template-columns:1fr}}
-.fg{display:flex;flex-direction:column;gap:4px}
-.lbl{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em}
-input[type=date],select{font-family:'DM Sans',sans-serif;font-size:clamp(12px,3vw,13px);padding:clamp(7px,2vw,9px) 10px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);outline:none;width:100%}
+.rpt-panel{background:var(--color-background-secondary);border:1.5px solid var(--color-border-secondary);border-radius:16px;padding:16px;margin-bottom:16px}
+.rpt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.fg{display:flex;flex-direction:column;gap:6px}
+.lbl{font-size:13px;font-weight:700;color:var(--color-text-primary);text-transform:uppercase;letter-spacing:.05em}
+input[type=date],select{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;padding:14px 12px;border:2px solid var(--color-border-secondary);border-radius:12px;background:var(--color-background-primary);color:var(--color-text-primary);outline:none;width:100%;-webkit-appearance:none}
 input[type=date]:focus,select:focus{border-color:#EF9F27}
-.rpt-btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn-buscar,.btn-pdf{flex:1;min-width:120px;padding:clamp(8px,2vw,10px) clamp(12px,3vw,16px);font-size:clamp(12px,3vw,13px);font-weight:500;border-radius:var(--border-radius-md);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s;text-align:center}
-.btn-buscar{background:#FAEEDA;color:#854F0B;border:.5px solid #EF9F27}
-.btn-buscar:hover{background:#FAC775}
-.btn-pdf{background:#EAF3DE;color:#3B6D11;border:.5px solid #639922}
-.btn-pdf:hover{background:#C0DD97}
-.btn-pdf:disabled{opacity:.4;cursor:not-allowed}
-.rpt-item{display:flex;align-items:center;gap:clamp(6px,2vw,10px);padding:clamp(7px,2vw,9px) clamp(8px,2.5vw,12px);background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:5px;flex-wrap:wrap}
-.rpt-ped{font-family:'DM Mono',monospace;font-size:clamp(11px,2.8vw,13px);font-weight:500;color:var(--color-text-primary);min-width:clamp(70px,18vw,90px)}
-.rpt-nome{font-size:clamp(11px,2.8vw,13px);font-weight:500;color:var(--color-text-primary);flex:1;min-width:80px}
-.rpt-dt{font-size:clamp(10px,2.5vw,11px);color:var(--color-text-secondary);white-space:nowrap}
+.rpt-btns{display:flex;flex-direction:column;gap:10px}
+.btn-buscar,.btn-pdf{width:100%;padding:16px;font-size:17px;font-weight:700;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;-webkit-tap-highlight-color:transparent}
+.btn-buscar{background:#FAEEDA;color:#633806;border:2px solid #EF9F27}
+.btn-buscar:active{background:#FAC775}
+.btn-pdf{background:#EAF3DE;color:#27500A;border:2px solid #639922}
+.btn-pdf:active{background:#C0DD97}
+.btn-pdf:disabled{opacity:.35;cursor:not-allowed}
+.rpt-count{font-size:14px;font-weight:600;color:var(--color-text-secondary);margin-bottom:10px;padding:10px 14px;background:var(--color-background-secondary);border-radius:10px;text-align:center}
+.rpt-item{display:flex;align-items:center;gap:10px;padding:14px;background:var(--color-background-primary);border:1.5px solid var(--color-border-tertiary);border-radius:14px;margin-bottom:8px;flex-wrap:wrap}
+.rpt-ped{font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:var(--color-text-primary);min-width:100px}
+.rpt-nome{font-size:15px;font-weight:600;color:var(--color-text-primary);flex:1;min-width:80px}
+.rpt-dt{font-size:13px;color:var(--color-text-secondary);font-weight:400;white-space:nowrap;width:100%}
+
+@media(max-width:360px){
+  .rpt-grid{grid-template-columns:1fr}
+  .stats .stat-n{font-size:26px}
+}
 </style>
 
 <div class="app">
   <div class="hdr">
     <div class="hdr-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"/>
         <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
       </svg>
     </div>
-    <div class="hdr-text">
-      <h1>Controle de serviços — surfaçagem</h1>
+    <div>
+      <h1>Controle — Surfaçagem</h1>
       <p id="relogio">--/--/---- --:--:--</p>
     </div>
   </div>
 
   <div class="tabs">
-    <button class="tab on" onclick="goTab('reg')">Registrar</button>
-    <button class="tab" onclick="goTab('rpt')">Relatório / pesquisa</button>
+    <button class="tab on" onclick="goTab('reg')">✔ Registrar</button>
+    <button class="tab" onclick="goTab('rpt')">📋 Relatório</button>
   </div>
 
+  <!-- ABA REGISTRAR -->
   <div id="tab-reg">
-    <div style="font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Operador</div>
+    <div class="sec-label">1. Quem está trabalhando?</div>
     <div class="ops">
       <button class="op" onclick="selOp('Percília')" id="op-Percília">
         <div class="op-avatar" style="background:#FBEAF0;color:#993556">PE</div>
         <div class="op-name">Percília</div>
+        <div class="op-sub">Operadora</div>
+        <div class="op-check">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
       </button>
       <button class="op" onclick="selOp('Matheus')" id="op-Matheus">
         <div class="op-avatar" style="background:#E1F5EE;color:#0F6E56">MA</div>
         <div class="op-name">Matheus</div>
+        <div class="op-sub">Operador</div>
+        <div class="op-check">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
       </button>
     </div>
 
+    <div class="sec-label">2. Bipe o pedido e registre</div>
     <div class="scan-box">
-      <div class="scan-label">Código do pedido</div>
-      <div class="scan-row">
-        <input class="scan-input" id="scan" placeholder="Bipe ou digite o código..." autocomplete="off" />
-        <button class="btn-reg" onclick="registrar()">Registrar</button>
-      </div>
-      <div class="scan-hint">Pressione Enter após bipar para registrar automaticamente</div>
+      <div class="scan-title">Código do pedido</div>
+      <div class="scan-sub">Aponte o leitor para o código de barras ou digite o número abaixo:</div>
+      <input class="scan-input" id="scan" placeholder="Ex: PD-00123" autocomplete="off" />
+      <button class="btn-reg" onclick="registrar()">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Registrar serviço
+      </button>
     </div>
 
     <div class="flash" id="flash"></div>
 
+    <div class="sec-label">Resumo de hoje</div>
     <div class="stats">
-      <div class="stat"><div class="stat-n" id="tot">0</div><div class="stat-l">Total hoje</div></div>
-      <div class="stat"><div class="stat-n" id="totSem">0</div><div class="stat-l">Esta semana</div></div>
-      <div class="stat"><div class="stat-n" id="totGeral">0</div><div class="stat-l">Total geral</div></div>
+      <div class="stat"><div class="stat-n" id="tot">0</div><div class="stat-l">Hoje</div></div>
+      <div class="stat"><div class="stat-n" id="totSem">0</div><div class="stat-l">Semana</div></div>
+      <div class="stat"><div class="stat-n" id="totGeral">0</div><div class="stat-l">Total</div></div>
     </div>
 
     <div class="list-hdr">
-      <span class="list-title">Últimos registros</span>
+      <span class="list-title">Registros</span>
       <span class="badge" id="badge">0</span>
     </div>
     <div id="lista"></div>
   </div>
 
+  <!-- ABA RELATÓRIO -->
   <div id="tab-rpt" style="display:none">
+    <div class="sec-label">Filtrar por período</div>
     <div class="rpt-panel">
       <div class="rpt-grid">
         <div class="fg"><label class="lbl">Data inicial</label><input type="date" id="dtIni" /></div>
         <div class="fg"><label class="lbl">Data final</label><input type="date" id="dtFim" /></div>
         <div class="fg" style="grid-column:1/-1"><label class="lbl">Operador</label>
           <select id="filtOp">
-            <option value="">Todos</option>
+            <option value="">Todos os operadores</option>
             <option>Percília</option>
             <option>Matheus</option>
           </select>
         </div>
       </div>
       <div class="rpt-btns">
-        <button class="btn-buscar" onclick="buscar()">Pesquisar</button>
-        <button class="btn-pdf" id="btnPdf" onclick="gerarPdf()" disabled>Baixar PDF</button>
+        <button class="btn-buscar" onclick="buscar()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Pesquisar
+        </button>
+        <button class="btn-pdf" id="btnPdf" onclick="gerarPdf()" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Baixar relatório PDF
+        </button>
       </div>
     </div>
     <div id="rpt-res"></div>
@@ -184,10 +222,11 @@ function selOp(nome){
 
 document.getElementById('scan').addEventListener('keydown',e=>{if(e.key==='Enter')registrar();});
 
-function flash(msg,tipo){
+function flash(msg,tipo,icone){
   const el=document.getElementById('flash');
-  el.textContent=msg;el.className='flash '+tipo;
-  clearTimeout(el._t);el._t=setTimeout(()=>el.className='flash',2500);
+  el.innerHTML=`<span style="font-size:20px">${icone}</span><span>${msg}</span>`;
+  el.className='flash '+tipo;
+  clearTimeout(el._t);el._t=setTimeout(()=>el.className='flash',3000);
 }
 
 function fmtDt(iso){const[y,m,d]=iso.split('T')[0].split('-');return`${d}/${m}/${y}`;}
@@ -195,16 +234,20 @@ function fmtHr(iso){const d=new Date(iso),p=v=>String(v).padStart(2,'0');return`
 
 function registrar(){
   const codigo=document.getElementById('scan').value.trim();
-  if(!op){flash('Selecione um operador primeiro.','err');return;}
-  if(!codigo){flash('Bipe ou informe o código do pedido.','err');return;}
+  if(!op){flash('Selecione seu nome antes de registrar!','err','⚠️');return;}
+  if(!codigo){flash('Digite ou bipe o código do pedido.','err','⚠️');return;}
   registros.unshift({id:Date.now(),pedido:codigo,operador:op,ts:new Date().toISOString()});
   document.getElementById('scan').value='';
   document.getElementById('scan').focus();
-  flash(`Pedido ${codigo} registrado por ${op}.`,'ok');
+  flash(`Pedido ${codigo} registrado com sucesso!`,'ok','✅');
   renderLista();atualizaStats();
 }
 
-function remover(id){registros=registros.filter(r=>r.id!==id);renderLista();atualizaStats();}
+function remover(id){
+  if(!confirm('Remover este registro?'))return;
+  registros=registros.filter(r=>r.id!==id);
+  renderLista();atualizaStats();
+}
 
 function atualizaStats(){
   document.getElementById('tot').textContent=registros.filter(r=>r.ts.startsWith(hoje)).length;
@@ -219,16 +262,19 @@ const iniciais={Percília:'PE',Matheus:'MA'};
 
 function renderLista(){
   const lista=document.getElementById('lista');
-  if(!registros.length){lista.innerHTML='<div class="empty">Nenhum serviço registrado ainda.</div>';return;}
+  if(!registros.length){
+    lista.innerHTML='<div class="empty"><strong>Nenhum registro ainda</strong>Selecione seu nome, bipe o pedido e toque em "Registrar serviço".</div>';
+    return;
+  }
   lista.innerHTML=registros.slice(0,50).map(r=>`
     <div class="item">
-      <div style="width:30px;height:30px;min-width:30px;border-radius:50%;background:${bgCores[r.operador]||'#eee'};color:${cores[r.operador]||'#333'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500">${iniciais[r.operador]||'??'}</div>
-      <span class="item-ped">${r.pedido}</span>
+      <div class="item-avatar" style="background:${bgCores[r.operador]||'#eee'};color:${cores[r.operador]||'#333'}">${iniciais[r.operador]||'??'}</div>
       <div class="item-info">
+        <div class="item-ped">${r.pedido}</div>
         <div class="item-nome">${r.operador}</div>
         <div class="item-dt">${fmtDt(r.ts)} às ${fmtHr(r.ts)}</div>
       </div>
-      <button class="item-del" onclick="remover(${r.id})">✕</button>
+      <button class="item-del" onclick="remover(${r.id})" title="Remover">✕</button>
     </div>`).join('');
 }
 
@@ -238,13 +284,17 @@ function buscar(){
   rptFiltrados=registros.filter(r=>{const d=r.ts.split('T')[0];return d>=ini&&d<=fim&&(!fop||r.operador===fop);});
   document.getElementById('btnPdf').disabled=rptFiltrados.length===0;
   const res=document.getElementById('rpt-res');
-  if(!rptFiltrados.length){res.innerHTML='<div class="empty">Nenhum registro encontrado para o período.</div>';return;}
-  res.innerHTML=`<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">${rptFiltrados.length} registro(s) encontrado(s)</div>`+
+  if(!rptFiltrados.length){
+    res.innerHTML='<div class="empty"><strong>Nenhum resultado</strong>Tente outro período ou operador.</div>';
+    return;
+  }
+  res.innerHTML=`<div class="rpt-count">${rptFiltrados.length} registro(s) encontrado(s)</div>`+
     rptFiltrados.map(r=>`
       <div class="rpt-item">
+        <div class="item-avatar" style="width:40px;height:40px;min-width:40px;border-radius:50%;background:${bgCores[r.operador]||'#eee'};color:${cores[r.operador]||'#333'};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">${iniciais[r.operador]||'??'}</div>
         <span class="rpt-ped">${r.pedido}</span>
         <span class="rpt-nome">${r.operador}</span>
-        <span class="rpt-dt">${fmtDt(r.ts)} ${fmtHr(r.ts)}</span>
+        <span class="rpt-dt">${fmtDt(r.ts)} às ${fmtHr(r.ts)}</span>
       </div>`).join('');
 }
 
