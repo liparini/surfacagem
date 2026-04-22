@@ -16,8 +16,7 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f5;min-height:100vh}
 .hdr h1{font-size:18px;font-weight:700;color:#111;line-height:1.2}
 .hdr-meta{display:flex;align-items:center;gap:8px;margin-top:3px;flex-wrap:wrap}
 .status-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;transition:background .3s}
-.status-dot.on{background:#639922}
-.status-dot.err{background:#E24B4A}
+.status-dot.on{background:#639922}.status-dot.err{background:#E24B4A}
 .status-txt,.relogio{font-size:12px;color:#666}
 
 .tabs{display:flex;gap:6px;margin-bottom:20px;background:#eee;border-radius:14px;padding:4px}
@@ -44,55 +43,44 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f5;min-height:100vh}
 .scan-input:focus{border-color:#EF9F27;box-shadow:0 0 0 3px rgba(239,159,39,.15)}
 .scan-input.dup-warn{border-color:#E24B4A;box-shadow:0 0 0 3px rgba(226,75,74,.15)}
 .scan-input::placeholder{font-size:15px;font-weight:400;letter-spacing:0;opacity:.5}
-
 .dup-aviso{display:none;padding:12px 14px;border-radius:10px;font-size:14px;font-weight:600;background:#FCEBEB;color:#791F1F;border:1.5px solid #E24B4A;margin-bottom:10px;align-items:center;gap:8px;line-height:1.4}
 .dup-aviso.show{display:flex}
-
 .btn-reg{width:100%;padding:18px;font-size:18px;font-weight:700;background:#BA7517;color:#fff;border:none;border-radius:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:10px;-webkit-tap-highlight-color:transparent}
 .btn-reg:active{background:#854F0B;transform:scale(.98)}
-.btn-reg:hover{background:#854F0B}
 .btn-reg:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 .flash{padding:14px 16px;border-radius:12px;font-size:16px;font-weight:600;margin-bottom:16px;display:none;line-height:1.4;align-items:center;gap:10px}
 .flash.ok{background:#EAF3DE;color:#27500A;border:1.5px solid #639922;display:flex}
 .flash.err{background:#FCEBEB;color:#791F1F;border:1.5px solid #E24B4A;display:flex}
-.flash.warn{background:#FAEEDA;color:#633806;border:1.5px solid #EF9F27;display:flex}
 
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:24px}
 .stat{background:#f0f0f0;border-radius:12px;padding:14px 10px;text-align:center}
 .stat-n{font-size:32px;font-weight:700;color:#111;line-height:1}
 .stat-l{font-size:12px;font-weight:600;color:#666;margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
-.stat.alert-stat{background:#FCEBEB}
-.stat.alert-stat .stat-n{color:#A32D2D}
-.stat.alert-stat .stat-l{color:#A32D2D}
 
 .list-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .list-title{font-size:14px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.06em}
 .badge{font-size:13px;font-weight:600;background:#eee;color:#666;padding:4px 12px;border-radius:99px;border:1px solid #ddd}
-.badge.dup-badge{background:#FCEBEB;color:#A32D2D;border-color:#E24B4A}
 
-/* SECAO DUPLICADOS */
+/* DUPLICADOS TELA */
 .dup-section{margin-bottom:24px}
-.dup-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:12px 14px;background:#FCEBEB;border:1.5px solid #E24B4A;border-radius:12px}
+.dup-header{display:flex;align-items:center;gap:8px;padding:12px 14px;background:#FCEBEB;border:1.5px solid #E24B4A;border-radius:12px;margin-bottom:10px}
 .dup-header-icon{width:28px;height:28px;background:#E24B4A;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .dup-header-txt{flex:1}
 .dup-header-title{font-size:14px;font-weight:700;color:#791F1F}
 .dup-header-sub{font-size:12px;color:#A32D2D;margin-top:1px}
-.dup-badge-count{font-size:12px;font-weight:700;background:#E24B4A;color:#fff;padding:3px 10px;border-radius:99px}
-
+.dup-badge-count{font-size:12px;font-weight:700;background:#E24B4A;color:#fff;padding:3px 10px;border-radius:99px;white-space:nowrap}
 .dup-group{background:#fff;border:2px solid #E24B4A;border-radius:14px;margin-bottom:10px;overflow:hidden}
 .dup-group-header{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#FCEBEB;border-bottom:1px solid #F7C1C1}
 .dup-group-ped{font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:#791F1F}
 .dup-group-op{font-size:13px;font-weight:600;color:#A32D2D;flex:1}
-.dup-group-count{font-size:12px;font-weight:700;background:#E24B4A;color:#fff;padding:3px 10px;border-radius:99px}
+.dup-group-count{font-size:12px;font-weight:700;background:#E24B4A;color:#fff;padding:3px 10px;border-radius:99px;white-space:nowrap}
 .dup-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:.5px solid #f5e5e5}
 .dup-item:last-child{border-bottom:none}
-.dup-item-n{font-size:12px;font-weight:700;color:#A32D2D;min-width:20px}
+.dup-item-n{font-size:12px;font-weight:700;color:#A32D2D;min-width:22px}
 .dup-item-dt{font-size:13px;color:#555;flex:1}
-.dup-item-del{background:#FCEBEB;border:1px solid #F7C1C1;cursor:pointer;color:#A32D2D;font-size:15px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
-.dup-item-del:active{background:#F7C1C1}
+.dup-item-del{background:#FCEBEB;border:1px solid #F7C1C1;cursor:pointer;color:#A32D2D;font-size:15px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
-/* LISTA NORMAL */
 .item{display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border:1.5px solid #eee;border-radius:14px;margin-bottom:8px;animation:fadeIn .3s ease}
 .item.is-dup{border-color:#E24B4A;background:#fffafa}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
@@ -102,9 +90,8 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f5;min-height:100vh}
 .item-nome{font-size:14px;font-weight:600;color:#555;margin-top:2px}
 .item-dt{font-size:12px;color:#888;margin-top:2px}
 .dup-tag{font-size:11px;font-weight:700;background:#E24B4A;color:#fff;padding:2px 7px;border-radius:6px;margin-left:6px;vertical-align:middle}
-.item-del{background:#f5f5f5;border:1px solid #ddd;cursor:pointer;color:#999;font-size:18px;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.item-del{background:#f5f5f5;border:1px solid #ddd;cursor:pointer;color:#999;font-size:18px;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .item-del:active{background:#FCEBEB;color:#A32D2D;border-color:#E24B4A}
-
 .empty{text-align:center;color:#999;font-size:15px;padding:32px 16px;border:2px dashed #ddd;border-radius:14px;line-height:1.6}
 .empty strong{display:block;font-size:17px;font-weight:700;margin-bottom:6px;color:#555}
 .loading{text-align:center;padding:32px;color:#999;font-size:15px}
@@ -123,21 +110,39 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
 .btn-buscar{background:#FAEEDA;color:#633806;border:2px solid #EF9F27}
 .btn-buscar:active{background:#FAC775}
 .btn-pdf{background:#EAF3DE;color:#27500A;border:2px solid #639922}
-.btn-pdf:active{background:#C0DD97}
 .btn-pdf:disabled{opacity:.35;cursor:not-allowed}
 .rpt-count{font-size:14px;font-weight:600;color:#666;margin-bottom:10px;padding:10px 14px;background:#f0f0f0;border-radius:10px;text-align:center}
 .rpt-item{display:flex;align-items:center;gap:10px;padding:14px;background:#fff;border:1.5px solid #eee;border-radius:14px;margin-bottom:8px;flex-wrap:wrap}
-.rpt-item.is-dup{border-color:#E24B4A;background:#fffafa}
-.rpt-ped{font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:#111;min-width:100px}
+.rpt-item.is-dup{border-left:5px solid #E24B4A;background:#fffafa}
+.rpt-ped{font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:#111;min-width:100px}
+.rpt-item.is-dup .rpt-ped{color:#A32D2D}
 .rpt-nome{font-size:15px;font-weight:600;color:#111;flex:1;min-width:80px}
 .rpt-dt{font-size:13px;color:#888;width:100%}
 
-@media(max-width:360px){.rpt-grid{grid-template-columns:1fr}.stats .stat-n{font-size:26px}}
+/* RESUMO DUPLICIDADES NO RELATÓRIO */
+.rpt-dup-resumo{margin-top:24px;border:2px solid #E24B4A;border-radius:16px;overflow:hidden}
+.rpt-dup-resumo-header{background:#FCEBEB;padding:14px 16px;border-bottom:1px solid #F7C1C1}
+.rpt-dup-resumo-title{font-size:15px;font-weight:700;color:#791F1F;display:flex;align-items:center;gap:8px}
+.rpt-dup-resumo-sub{font-size:12px;color:#A32D2D;margin-top:3px}
+.rpt-dup-body{padding:12px 16px}
+.rpt-dup-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.rpt-dup-stat{background:#FCEBEB;border-radius:12px;padding:12px;text-align:center;border:1px solid #F7C1C1}
+.rpt-dup-stat-n{font-size:26px;font-weight:700;color:#A32D2D;line-height:1}
+.rpt-dup-stat-op{font-size:13px;font-weight:600;color:#791F1F;margin-top:3px}
+.rpt-dup-stat-l{font-size:11px;color:#A32D2D;margin-top:1px;text-transform:uppercase;letter-spacing:.04em}
+.rpt-dup-list-title{font-size:13px;font-weight:700;color:#791F1F;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;border-top:1px solid #F7C1C1;padding-top:12px}
+.rpt-dup-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border:1.5px solid #F7C1C1;border-left:4px solid #E24B4A;border-radius:10px;margin-bottom:6px;flex-wrap:wrap}
+.rpt-dup-row-ped{font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:#A32D2D;min-width:90px}
+.rpt-dup-row-op{font-size:13px;font-weight:600;color:#555;flex:1}
+.rpt-dup-row-qtd{font-size:12px;font-weight:700;background:#E24B4A;color:#fff;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.rpt-dup-row-dts{font-size:12px;color:#888;width:100%;margin-top:3px;line-height:1.6}
+.rpt-ok-box{margin-top:14px;padding:12px 14px;background:#EAF3DE;border:1.5px solid #639922;border-radius:12px;font-size:14px;font-weight:600;color:#27500A;display:flex;align-items:center;gap:8px}
+
+@media(max-width:360px){.rpt-grid{grid-template-columns:1fr}.stats .stat-n{font-size:26px}.rpt-dup-stats{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-
   <div class="hdr">
     <div class="hdr-icon">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -160,7 +165,6 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     <button class="tab" onclick="goTab('rpt')">📋 Relatório</button>
   </div>
 
-  <!-- ABA REGISTRAR -->
   <div id="tab-reg">
     <div class="sec-label">1. Quem está trabalhando?</div>
     <div class="ops">
@@ -200,7 +204,6 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
       <div class="stat"><div class="stat-n" id="totGeral">0</div><div class="stat-l">Total</div></div>
     </div>
 
-    <!-- SEÇÃO DUPLICADOS -->
     <div id="dupSection" class="dup-section" style="display:none">
       <div class="dup-header">
         <div class="dup-header-icon">
@@ -222,7 +225,6 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     <div id="lista"><div class="loading"><div class="spinner"></div>Carregando registros...</div></div>
   </div>
 
-  <!-- ABA RELATÓRIO -->
   <div id="tab-rpt" style="display:none">
     <div class="sec-label">Filtrar por período</div>
     <div class="rpt-panel">
@@ -232,7 +234,8 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
         <div class="fg" style="grid-column:1/-1"><label class="lbl">Operador</label>
           <select id="filtOp">
             <option value="">Todos os operadores</option>
-            <option>Percília</option><option>Matheus</option>
+            <option>Percília</option>
+            <option>Matheus</option>
           </select>
         </div>
       </div>
@@ -249,40 +252,57 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     </div>
     <div id="rpt-res"></div>
   </div>
-
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script>
 const FB = 'https://montagem-ed7de-default-rtdb.firebaseio.com';
-let op = null, registros = [], rptFiltrados = [];
+const OPS_SURF = ['Percília','Matheus'];
+
+// Todos os caminhos onde podem existir registros de surfaçagem
+const PATHS_BUSCA = ['surfacagem','montagem'];
+
+let op=null, registros=[], rptFiltrados=[];
 
 const hoje = new Date().toISOString().split('T')[0];
-const inicioSemana = (()=>{const d=new Date();d.setDate(d.getDate()-d.getDay());return d.toISOString().split('T')[0]})();
-document.getElementById('dtIni').value = inicioSemana;
-document.getElementById('dtFim').value = hoje;
+const inicioSemana=(()=>{const d=new Date();d.setDate(d.getDate()-d.getDay());return d.toISOString().split('T')[0]})();
+document.getElementById('dtIni').value=inicioSemana;
+document.getElementById('dtFim').value=hoje;
 
-function tick(){
-  const n=new Date(),p=v=>String(v).padStart(2,'0');
-  document.getElementById('relogio').textContent=`${p(n.getDate())}/${p(n.getMonth()+1)}/${n.getFullYear()} ${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
-}
-tick(); setInterval(tick,1000);
+function tick(){const n=new Date(),p=v=>String(v).padStart(2,'0');document.getElementById('relogio').textContent=`${p(n.getDate())}/${p(n.getMonth()+1)}/${n.getFullYear()} ${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;}
+tick();setInterval(tick,1000);
 
-function setStatus(e,t){
-  const d=document.getElementById('statusDot');
-  d.className='status-dot'+(e==='on'?' on':e==='err'?' err':'');
-  document.getElementById('statusTxt').textContent=t;
-}
+function setStatus(e,t){const d=document.getElementById('statusDot');d.className='status-dot'+(e==='on'?' on':e==='err'?' err':'');document.getElementById('statusTxt').textContent=t;}
 
 async function buscarTodos(){
   try{
-    const r=await fetch(`${FB}/surfacagem.json`);
-    if(!r.ok) throw new Error();
-    const data=await r.json();
-    registros=data
-      ? Object.entries(data).map(([id,v])=>({...v,fireId:id})).sort((a,b)=>b.ts.localeCompare(a.ts))
-      : [];
+    // Busca todos os caminhos ao mesmo tempo
+    const respostas = await Promise.all(
+      PATHS_BUSCA.map(path => fetch(`${FB}/${path}.json`).then(r=>r.ok?r.json():null).catch(()=>null))
+    );
+
+    const vistos = new Set(); // evita duplicar mesmo registro que apareça nos dois caminhos
+    let todos = [];
+
+    respostas.forEach((data, idx) => {
+      const path = PATHS_BUSCA[idx];
+      if(!data) return;
+      Object.entries(data).forEach(([id, v]) => {
+        if(!v || !v.operador || !v.ts) return; // ignora registros incompletos
+        // Só inclui se for operador de surfaçagem OU se foi salvo no caminho surfacagem
+        const isSurfOp = OPS_SURF.includes(v.operador);
+        const isSurfPath = path === 'surfacagem';
+        if(!isSurfOp && !isSurfPath) return;
+        // Evita duplicar o mesmo fireId
+        const key = `${path}_${id}`;
+        if(vistos.has(key)) return;
+        vistos.add(key);
+        todos.push({...v, fireId:id, _path:path});
+      });
+    });
+
+    registros = todos.sort((a,b)=>b.ts.localeCompare(a.ts));
     setStatus('on','Conectado — ao vivo');
     renderTudo();
     atualizaStats();
@@ -290,8 +310,9 @@ async function buscarTodos(){
     setStatus('err','Sem conexão');
   }
 }
+
 buscarTodos();
-setInterval(buscarTodos,3000);
+setInterval(buscarTodos, 3000);
 
 function goTab(t){
   document.getElementById('tab-reg').style.display=t==='reg'?'':'none';
@@ -299,48 +320,21 @@ function goTab(t){
   document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',(t==='reg'&&i===0)||(t==='rpt'&&i===1)));
 }
 
-function selOp(nome){
-  op=nome;
-  document.querySelectorAll('.op').forEach(b=>b.classList.remove('sel'));
-  document.getElementById('op-'+nome).classList.add('sel');
-  document.getElementById('scan').focus();
-  verificarDup();
-}
-
+function selOp(nome){op=nome;document.querySelectorAll('.op').forEach(b=>b.classList.remove('sel'));document.getElementById('op-'+nome).classList.add('sel');document.getElementById('scan').focus();verificarDup();}
 document.getElementById('scan').addEventListener('keydown',e=>{if(e.key==='Enter')registrar();});
 
-// Verifica duplicidade ao digitar/bipar
 function verificarDup(){
   const codigo=document.getElementById('scan').value.trim();
-  const input=document.getElementById('scan');
-  const aviso=document.getElementById('dupAviso');
-  const avisoTxt=document.getElementById('dupAvisoTxt');
-
-  if(!codigo||!op){
-    input.classList.remove('dup-warn');
-    aviso.classList.remove('show');
-    return;
-  }
-
+  const input=document.getElementById('scan'),aviso=document.getElementById('dupAviso');
+  if(!codigo||!op){input.classList.remove('dup-warn');aviso.classList.remove('show');return;}
   const dups=registros.filter(r=>r.pedido===codigo&&r.operador===op);
   if(dups.length>0){
-    input.classList.add('dup-warn');
-    aviso.classList.add('show');
-    avisoTxt.textContent=`Este pedido já foi registrado ${dups.length}x por ${op}. Você pode registrar novamente se necessário.`;
-  } else {
-    input.classList.remove('dup-warn');
-    aviso.classList.remove('show');
-  }
+    input.classList.add('dup-warn');aviso.classList.add('show');
+    document.getElementById('dupAvisoTxt').textContent=`Este pedido já foi registrado ${dups.length}x por ${op}. Você pode registrar novamente se necessário.`;
+  }else{input.classList.remove('dup-warn');aviso.classList.remove('show');}
 }
 
-function flash(msg,tipo,icone){
-  const el=document.getElementById('flash');
-  el.innerHTML=`<span style="font-size:20px">${icone}</span><span>${msg}</span>`;
-  el.className='flash '+tipo;
-  clearTimeout(el._t);
-  el._t=setTimeout(()=>el.className='flash',3500);
-}
-
+function flash(msg,tipo,icone){const el=document.getElementById('flash');el.innerHTML=`<span style="font-size:20px">${icone}</span><span>${msg}</span>`;el.className='flash '+tipo;clearTimeout(el._t);el._t=setTimeout(()=>el.className='flash',3500);}
 function fmtDt(iso){const[y,m,d]=iso.split('T')[0].split('-');return`${d}/${m}/${y}`;}
 function fmtHr(iso){const d=new Date(iso),p=v=>String(v).padStart(2,'0');return`${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;}
 
@@ -348,51 +342,32 @@ async function registrar(){
   const codigo=document.getElementById('scan').value.trim();
   if(!op){flash('Selecione seu nome antes de registrar!','err','⚠️');return;}
   if(!codigo){flash('Digite ou bipe o código do pedido.','err','⚠️');return;}
-
   const dups=registros.filter(r=>r.pedido===codigo&&r.operador===op);
-  if(dups.length>0){
-    const ok=confirm(`⚠️ Atenção!\n\nEste pedido já foi registrado ${dups.length}x por ${op}.\n\nDeseja registrar novamente mesmo assim?`);
-    if(!ok) return;
-  }
-
-  const btn=document.getElementById('btnReg');
-  btn.disabled=true;
+  if(dups.length>0){const ok=confirm(`⚠️ Atenção!\n\nEste pedido já foi registrado ${dups.length}x por ${op}.\n\nDeseja registrar novamente mesmo assim?`);if(!ok)return;}
+  const btn=document.getElementById('btnReg');btn.disabled=true;
   try{
-    const r=await fetch(`${FB}/surfacagem.json`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({pedido:codigo,operador:op,ts:new Date().toISOString(),setor:'Surfaçagem'})
-    });
-    if(!r.ok) throw new Error();
+    const r=await fetch(`${FB}/surfacagem.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido:codigo,operador:op,ts:new Date().toISOString(),setor:'Surfaçagem'})});
+    if(!r.ok)throw new Error();
     document.getElementById('scan').value='';
     document.getElementById('scan').classList.remove('dup-warn');
     document.getElementById('dupAviso').classList.remove('show');
     document.getElementById('scan').focus();
     flash(`Pedido ${codigo} registrado com sucesso!`,'ok','✅');
     await buscarTodos();
-  }catch(e){
-    flash('Erro ao salvar. Verifique a conexão.','err','❌');
-  }finally{btn.disabled=false;}
+  }catch(e){flash('Erro ao salvar. Verifique a conexão.','err','❌');}
+  finally{btn.disabled=false;}
 }
 
-async function remover(fireId){
-  if(!confirm('Remover este registro?')) return;
-  try{
-    await fetch(`${FB}/surfacagem/${fireId}.json`,{method:'DELETE'});
-    await buscarTodos();
-  }catch(e){flash('Erro ao remover.','err','❌');}
+async function remover(fireId,path){
+  if(!confirm('Remover este registro?'))return;
+  try{await fetch(`${FB}/${path}/${fireId}.json`,{method:'DELETE'});await buscarTodos();}
+  catch(e){flash('Erro ao remover.','err','❌');}
 }
 
-// Calcula quais pedidos são duplicados (mesmo número + mesmo operador)
-function calcularDups(){
+function calcularDups(lista){
   const mapa={};
-  registros.forEach(r=>{
-    const key=`${r.operador}||${r.pedido}`;
-    if(!mapa[key]) mapa[key]=[];
-    mapa[key].push(r);
-  });
-  const dupKeys=new Set();
-  const grupos=[];
+  lista.forEach(r=>{const key=`${r.operador}||${r.pedido}`;if(!mapa[key])mapa[key]=[];mapa[key].push(r);});
+  const dupKeys=new Set();const grupos=[];
   Object.entries(mapa).forEach(([key,itens])=>{
     if(itens.length>1){
       dupKeys.add(key);
@@ -403,34 +378,31 @@ function calcularDups(){
 }
 
 function atualizaStats(){
-  const{grupos}=calcularDups();
   document.getElementById('tot').textContent=registros.filter(r=>r.ts.startsWith(hoje)).length;
   document.getElementById('totSem').textContent=registros.filter(r=>r.ts.split('T')[0]>=inicioSemana).length;
   document.getElementById('totGeral').textContent=registros.length;
   document.getElementById('badge').textContent=registros.length;
 }
 
-const cores   ={Percília:'#993556',Matheus:'#0F6E56'};
-const bgCores ={Percília:'#FBEAF0',Matheus:'#E1F5EE'};
-const iniciais={Percília:'PE',Matheus:'MA'};
+function avatarStyle(op){
+  const c={Percília:'#993556',Matheus:'#0F6E56'};
+  const bg={Percília:'#FBEAF0',Matheus:'#E1F5EE'};
+  const ini={Percília:'PE',Matheus:'MA'};
+  return{cor:c[op]||'#555',bg:bg[op]||'#eee',ini:ini[op]||(op||'?').substring(0,2).toUpperCase()};
+}
 
 function renderTudo(){
-  const{dupKeys,grupos}=calcularDups();
-
-  // Seção duplicados
+  const{dupKeys,grupos}=calcularDups(registros);
   const dupSection=document.getElementById('dupSection');
-  const dupLista=document.getElementById('dupLista');
-  const dupBadgeCount=document.getElementById('dupBadgeCount');
-
-  if(grupos.length===0){
-    dupSection.style.display='none';
-  } else {
+  if(grupos.length===0){dupSection.style.display='none';}
+  else{
     dupSection.style.display='';
-    dupBadgeCount.textContent=grupos.length+' grupo'+(grupos.length>1?'s':'');
-    dupLista.innerHTML=grupos.map(g=>`
-      <div class="dup-group">
+    document.getElementById('dupBadgeCount').textContent=grupos.length+' grupo'+(grupos.length>1?'s':'');
+    document.getElementById('dupLista').innerHTML=grupos.map(g=>{
+      const a=avatarStyle(g.operador);
+      return`<div class="dup-group">
         <div class="dup-group-header">
-          <div class="item-avatar" style="width:36px;height:36px;min-width:36px;border-radius:50%;background:${bgCores[g.operador]||'#eee'};color:${cores[g.operador]||'#333'};font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">${iniciais[g.operador]||'??'}</div>
+          <div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:${a.bg};color:${a.cor};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">${a.ini}</div>
           <span class="dup-group-ped">${g.pedido}</span>
           <span class="dup-group-op">${g.operador}</span>
           <span class="dup-group-count">${g.itens.length}x registrado</span>
@@ -439,63 +411,108 @@ function renderTudo(){
           <div class="dup-item">
             <span class="dup-item-n">#${i+1}</span>
             <span class="dup-item-dt">${fmtDt(item.ts)} às ${fmtHr(item.ts)}</span>
-            <button class="dup-item-del" onclick="remover('${item.fireId}')" title="Remover este registro">✕</button>
+            <button class="dup-item-del" onclick="remover('${item.fireId}','${item._path||'surfacagem'}')">✕</button>
           </div>`).join('')}
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
 
-  // Lista geral
   const lista=document.getElementById('lista');
   if(!registros.length){
     lista.innerHTML='<div class="empty"><strong>Nenhum registro ainda</strong>Selecione seu nome, bipe o pedido e toque em "Registrar serviço".</div>';
     return;
   }
-
-  lista.innerHTML=registros.slice(0,60).map(r=>{
-    const key=`${r.operador}||${r.pedido}`;
-    const isDup=dupKeys.has(key);
+  lista.innerHTML=registros.slice(0,100).map(r=>{
+    const a=avatarStyle(r.operador);
+    const isDup=calcularDups(registros).dupKeys.has(`${r.operador}||${r.pedido}`);
     return`<div class="item${isDup?' is-dup':''}">
-      <div class="item-avatar" style="background:${bgCores[r.operador]||'#eee'};color:${cores[r.operador]||'#333'}">${iniciais[r.operador]||'??'}</div>
+      <div class="item-avatar" style="background:${a.bg};color:${a.cor}">${a.ini}</div>
       <div class="item-info">
         <div class="item-ped">${r.pedido}${isDup?'<span class="dup-tag">DUP</span>':''}</div>
         <div class="item-nome">${r.operador}</div>
         <div class="item-dt">${fmtDt(r.ts)} às ${fmtHr(r.ts)}</div>
       </div>
-      <button class="item-del" onclick="remover('${r.fireId}')">✕</button>
+      <button class="item-del" onclick="remover('${r.fireId}','${r._path||'surfacagem'}')">✕</button>
     </div>`;
   }).join('');
-
-  // Atualiza verificação do campo ao re-renderizar
   verificarDup();
 }
 
 function buscar(){
   const ini=document.getElementById('dtIni').value,fim=document.getElementById('dtFim').value,fop=document.getElementById('filtOp').value;
-  if(!ini||!fim) return;
+  if(!ini||!fim)return;
   rptFiltrados=registros.filter(r=>{const d=r.ts.split('T')[0];return d>=ini&&d<=fim&&(!fop||r.operador===fop);});
   document.getElementById('btnPdf').disabled=rptFiltrados.length===0;
   const res=document.getElementById('rpt-res');
   if(!rptFiltrados.length){res.innerHTML='<div class="empty"><strong>Nenhum resultado</strong>Tente outro período ou operador.</div>';return;}
 
-  const{dupKeys}=calcularDups();
-  res.innerHTML=`<div class="rpt-count">${rptFiltrados.length} registro(s) encontrado(s)</div>`+
-    rptFiltrados.map(r=>{
-      const key=`${r.operador}||${r.pedido}`;
-      const isDup=dupKeys.has(key);
-      return`<div class="rpt-item${isDup?' is-dup':''}">
-        <div style="width:40px;height:40px;min-width:40px;border-radius:50%;background:${bgCores[r.operador]||'#eee'};color:${cores[r.operador]||'#333'};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">${iniciais[r.operador]||'??'}</div>
-        <span class="rpt-ped">${r.pedido}${isDup?'<span class="dup-tag">DUP</span>':''}</span>
-        <span class="rpt-nome">${r.operador}</span>
-        <span class="rpt-dt">${fmtDt(r.ts)} às ${fmtHr(r.ts)}</span>
-      </div>`;
-    }).join('');
+  const{dupKeys,grupos}=calcularDups(rptFiltrados);
+
+  // Conta duplicidades por operador no período
+  const dupPorOp={};
+  grupos.forEach(g=>{
+    if(!dupPorOp[g.operador])dupPorOp[g.operador]=0;
+    dupPorOp[g.operador]+=(g.itens.length-1);
+  });
+
+  // Lista de registros com destaque
+  let html=`<div class="rpt-count">${rptFiltrados.length} registro(s) encontrado(s) no período</div>`;
+  html+=rptFiltrados.map(r=>{
+    const a=avatarStyle(r.operador);
+    const isDup=dupKeys.has(`${r.operador}||${r.pedido}`);
+    return`<div class="rpt-item${isDup?' is-dup':''}">
+      <div style="width:40px;height:40px;min-width:40px;border-radius:50%;background:${a.bg};color:${a.cor};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">${a.ini}</div>
+      <span class="rpt-ped">${r.pedido}${isDup?'<span class="dup-tag">DUP</span>':''}</span>
+      <span class="rpt-nome">${r.operador}</span>
+      <span class="rpt-dt">${fmtDt(r.ts)} às ${fmtHr(r.ts)}</span>
+    </div>`;
+  }).join('');
+
+  // Resumo de duplicidades no final
+  if(grupos.length===0){
+    html+=`<div class="rpt-ok-box"><span style="font-size:20px">✅</span><span>Nenhuma duplicidade encontrada neste período. Todos os pedidos estão únicos por operador.</span></div>`;
+  } else {
+    const percDup=dupPorOp['Percília']||0;
+    const mathDup=dupPorOp['Matheus']||0;
+    html+=`<div class="rpt-dup-resumo">
+      <div class="rpt-dup-resumo-header">
+        <div class="rpt-dup-resumo-title"><span style="font-size:18px">⚠️</span> Resumo de duplicidades do período</div>
+        <div class="rpt-dup-resumo-sub">Pedidos registrados mais de uma vez pelo mesmo operador</div>
+      </div>
+      <div class="rpt-dup-body">
+        <div class="rpt-dup-stats">
+          <div class="rpt-dup-stat">
+            <div class="rpt-dup-stat-n">${percDup}</div>
+            <div class="rpt-dup-stat-op">Percília</div>
+            <div class="rpt-dup-stat-l">registro(s) duplicado(s)</div>
+          </div>
+          <div class="rpt-dup-stat">
+            <div class="rpt-dup-stat-n">${mathDup}</div>
+            <div class="rpt-dup-stat-op">Matheus</div>
+            <div class="rpt-dup-stat-l">registro(s) duplicado(s)</div>
+          </div>
+        </div>
+        <div class="rpt-dup-list-title">Lista de pedidos com duplicidade</div>
+        ${grupos.map(g=>{
+          const a=avatarStyle(g.operador);
+          return`<div class="rpt-dup-row">
+            <div style="width:32px;height:32px;min-width:32px;border-radius:50%;background:${a.bg};color:${a.cor};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">${a.ini}</div>
+            <span class="rpt-dup-row-ped">${g.pedido}</span>
+            <span class="rpt-dup-row-op">${g.operador}</span>
+            <span class="rpt-dup-row-qtd">${g.itens.length}x registrado</span>
+            <span class="rpt-dup-row-dts">${g.itens.map((it,i)=>`#${i+1}: ${fmtDt(it.ts)} às ${fmtHr(it.ts)}`).join(' &nbsp;|&nbsp; ')}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+  res.innerHTML=html;
 }
 
 function gerarPdf(){
-  const{jsPDF}=window.jspdf;
-  const doc=new jsPDF();
+  const{jsPDF}=window.jspdf;const doc=new jsPDF();
   const ini=document.getElementById('dtIni').value,fim=document.getElementById('dtFim').value,fop=document.getElementById('filtOp').value||'Todos';
-  const{dupKeys}=calcularDups();
+  const{dupKeys,grupos}=calcularDups(rptFiltrados);
 
   doc.setFont('helvetica','bold');doc.setFontSize(14);
   doc.text('Relatório de Serviços — Surfaçagem',14,18);
@@ -507,43 +524,50 @@ function gerarPdf(){
   doc.autoTable({
     startY:37,
     head:[['#','Pedido','Operador','Data','Hora','Status']],
-    body:rptFiltrados.map((r,i)=>{
-      const key=`${r.operador}||${r.pedido}`;
-      return[i+1,r.pedido,r.operador,fmtDt(r.ts),fmtHr(r.ts),dupKeys.has(key)?'DUPLICADO':'OK'];
-    }),
+    body:rptFiltrados.map((r,i)=>{const isDup=dupKeys.has(`${r.operador}||${r.pedido}`);return[i+1,r.pedido,r.operador,fmtDt(r.ts),fmtHr(r.ts),isDup?'DUPLICADO':'OK'];}),
     styles:{font:'helvetica',fontSize:9,cellPadding:3},
     headStyles:{fillColor:[186,117,23],textColor:255,fontStyle:'bold'},
     alternateRowStyles:{fillColor:[255,249,240]},
-    columnStyles:{
-      0:{cellWidth:10,halign:'center'},
-      1:{cellWidth:40},
-      2:{cellWidth:32},
-      3:{cellWidth:26},
-      4:{cellWidth:22},
-      5:{cellWidth:24,halign:'center'}
-    },
-    didParseCell:function(data){
-      if(data.column.index===5&&data.cell.raw==='DUPLICADO'){
-        data.cell.styles.textColor=[162,45,45];
-        data.cell.styles.fontStyle='bold';
-      }
-    },
+    columnStyles:{0:{cellWidth:10,halign:'center'},1:{cellWidth:38},2:{cellWidth:32},3:{cellWidth:26},4:{cellWidth:22},5:{cellWidth:24,halign:'center'}},
+    didParseCell:function(data){if(data.column.index===5&&data.cell.raw==='DUPLICADO'){data.cell.styles.textColor=[162,45,45];data.cell.styles.fontStyle='bold';data.cell.styles.fillColor=[252,235,235];}},
     margin:{left:14,right:14}
   });
 
-  const porOp={};
-  rptFiltrados.forEach(r=>{porOp[r.operador]=(porOp[r.operador]||0)+1;});
-  const y=doc.lastAutoTable.finalY+10;
+  const porOp={};rptFiltrados.forEach(r=>{porOp[r.operador]=(porOp[r.operador]||0)+1;});
+  let y=doc.lastAutoTable.finalY+10;
   doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(0);
   doc.text('Resumo por operador',14,y);
-  doc.autoTable({
-    startY:y+4,head:[['Operador','Registros']],body:Object.entries(porOp),
-    styles:{font:'helvetica',fontSize:9,cellPadding:3},
-    headStyles:{fillColor:[153,61,86],textColor:255,fontStyle:'bold'},
-    columnStyles:{0:{cellWidth:60},1:{cellWidth:30,halign:'center'}},
-    margin:{left:14,right:14}
-  });
+  doc.autoTable({startY:y+4,head:[['Operador','Total registros']],body:Object.entries(porOp),
+    styles:{font:'helvetica',fontSize:9,cellPadding:3},headStyles:{fillColor:[153,61,86],textColor:255,fontStyle:'bold'},
+    columnStyles:{0:{cellWidth:60},1:{cellWidth:40,halign:'center'}},margin:{left:14,right:14}});
 
+  y=doc.lastAutoTable.finalY+12;
+  if(doc.internal.pageSize.getHeight()-y<60){doc.addPage();y=20;}
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(162,45,45);
+  doc.text('Resumo de duplicidades do período',14,y);
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120);
+  doc.text('Pedidos registrados mais de uma vez pelo mesmo operador',14,y+5);
+  y+=10;
+
+  if(grupos.length===0){
+    doc.setTextColor(59,109,17);doc.setFont('helvetica','bold');doc.setFontSize(9);
+    doc.text('Nenhuma duplicidade encontrada neste período.',14,y+4);
+  } else {
+    const dupPorOp={};grupos.forEach(g=>{if(!dupPorOp[g.operador])dupPorOp[g.operador]=0;dupPorOp[g.operador]+=(g.itens.length-1);});
+    doc.autoTable({startY:y+4,head:[['Operador','Registros duplicados (extras)']],
+      body:OPS_SURF.map(o=>[o,dupPorOp[o]||0]),
+      styles:{font:'helvetica',fontSize:9,cellPadding:3},headStyles:{fillColor:[226,75,74],textColor:255,fontStyle:'bold'},
+      columnStyles:{0:{cellWidth:60},1:{cellWidth:60,halign:'center'}},margin:{left:14,right:14}});
+    y=doc.lastAutoTable.finalY+8;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(0);
+    doc.text('Detalhamento dos pedidos duplicados:',14,y);
+    doc.autoTable({startY:y+4,head:[['Pedido','Operador','Qtd','Ocorrências']],
+      body:grupos.map(g=>[g.pedido,g.operador,g.itens.length+'x',g.itens.map((it,i)=>`#${i+1}: ${fmtDt(it.ts)} ${fmtHr(it.ts)}`).join(' | ')]),
+      styles:{font:'helvetica',fontSize:8,cellPadding:3},headStyles:{fillColor:[226,75,74],textColor:255,fontStyle:'bold'},
+      columnStyles:{0:{cellWidth:28},1:{cellWidth:28},2:{cellWidth:12,halign:'center'},3:{cellWidth:100}},
+      didParseCell:function(data){if(data.row.index%2===0&&data.section==='body')data.cell.styles.fillColor=[252,235,235];},
+      margin:{left:14,right:14}});
+  }
   doc.save(`surfacagem_${ini}_${fim}.pdf`);
 }
 </script>
