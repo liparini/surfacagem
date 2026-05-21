@@ -376,29 +376,32 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
 
   <!-- ABA ESTOQUE -->
   <div id="tab-est" style="display:none">
-    <!-- LOGIN ADMIN -->
+    <!-- Modal de login admin (overlay) -->
     <div id="est-login-area" style="display:none">
       <div class="est-login">
         <div class="est-login-icon">🔐</div>
-        <div class="est-login-title">Acesso restrito</div>
-        <div class="est-login-sub">Digite o e-mail e senha para adicionar itens ao estoque.</div>
+        <div class="est-login-title">Acesso de administrador</div>
+        <div class="est-login-sub">Digite o e-mail e senha para cadastrar e editar itens no estoque.</div>
         <div class="est-login-err" id="estLoginErr">E-mail ou senha incorretos.</div>
         <input class="est-input" id="estEmail" type="email" placeholder="E-mail" autocomplete="email" />
         <input class="est-input" id="estSenha" type="password" placeholder="Senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')tentarLogin()" />
-        <button class="btn-entrar" onclick="tentarLogin()">Entrar como administrador</button>
-        <button class="btn-modo-operador" onclick="mostrarEstoque()">📦 Ver estoque / registrar uso</button>
+        <button class="btn-entrar" onclick="tentarLogin()">Entrar</button>
+        <button class="btn-modo-operador" onclick="fecharLogin()">✕ Cancelar</button>
       </div>
     </div>
 
     <!-- CONTEÚDO DO ESTOQUE (visível para todos) -->
     <div id="est-conteudo">
-      <!-- Barra admin (visível só para admin logado) -->
+      <!-- Barra: admin logado OU botão para logar -->
       <div id="est-admin-bar" style="display:none" class="est-admin-bar">
         <div class="est-admin-info">
           <span class="est-admin-badge">Admin</span>
           <span class="est-admin-name">Carolline</span>
         </div>
         <button class="btn-sair" onclick="sairAdmin()">Sair</button>
+      </div>
+      <div id="est-btn-login-bar" style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button onclick="abrirLogin()" style="padding:10px 16px;font-size:13px;font-weight:600;background:#FAEEDA;color:#633806;border:1.5px solid #EF9F27;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif">🔐 Admin</button>
       </div>
 
       <!-- Painel adicionar item (só admin) -->
@@ -809,21 +812,35 @@ function gerarPdf(){
 
 // ===================== ESTOQUE =====================
 
+function abrirLogin(){
+  document.getElementById('est-login-area').style.display='';
+  document.getElementById('estEmail').value='';
+  document.getElementById('estSenha').value='';
+  document.getElementById('estLoginErr').classList.remove('show');
+  setTimeout(()=>document.getElementById('estEmail').focus(),100);
+}
+function fecharLogin(){
+  document.getElementById('est-login-area').style.display='none';
+}
+
 function iniciarEstoque(){
-  if(adminLogado){
-    mostrarEstoque();
-  } else {
-    document.getElementById('est-login-area').style.display='';
-    document.getElementById('est-conteudo').style.display='none';
-  }
+  document.getElementById('est-login-area').style.display='none';
+  document.getElementById('est-conteudo').style.display='';
+  atualizarBarraAdmin();
+  carregarEstoque();
 }
 
 function mostrarEstoque(){
   document.getElementById('est-login-area').style.display='none';
   document.getElementById('est-conteudo').style.display='';
-  document.getElementById('est-admin-bar').style.display=adminLogado?'':'none';
-  document.getElementById('est-add-panel').style.display=adminLogado?'':'none';
+  atualizarBarraAdmin();
   carregarEstoque();
+}
+
+function atualizarBarraAdmin(){
+  document.getElementById('est-admin-bar').style.display=adminLogado?'':'none';
+  document.getElementById('est-btn-login-bar').style.display=adminLogado?'none':'flex';
+  document.getElementById('est-add-panel').style.display=adminLogado?'':'none';
 }
 
 function tentarLogin(){
@@ -832,7 +849,8 @@ function tentarLogin(){
   if(email===ADMIN_EMAIL && senha===ADMIN_SENHA){
     adminLogado=true;
     document.getElementById('estLoginErr').classList.remove('show');
-    mostrarEstoque();
+    fecharLogin();
+    atualizarBarraAdmin();
   } else {
     document.getElementById('estLoginErr').classList.add('show');
   }
@@ -840,10 +858,9 @@ function tentarLogin(){
 
 function sairAdmin(){
   adminLogado=false;
-  document.getElementById('est-admin-bar').style.display='none';
-  document.getElementById('est-add-panel').style.display='none';
   document.getElementById('estEmail').value='';
   document.getElementById('estSenha').value='';
+  atualizarBarraAdmin();
 }
 
 function goEstTab(t){
@@ -931,29 +948,30 @@ async function adicionarItem(){
   if(!nome){flashEst('Informe o nome do item.','err','⚠️');return;}
   if(qtd<=0){flashEst('A quantidade deve ser maior que zero.','err','⚠️');return;}
 
-  // verifica se já existe item com mesmo nome
-  const existente = itenEstoque.find(i=>i.nome.toLowerCase()===nome.toLowerCase());
-  if(existente){
-    // soma à quantidade existente
-    const novaQtd = (existente.qtd||0) + qtd;
-    await fetch(`${FB}/estoque_items/${existente.fireId}.json`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({qtd:novaQtd})});
-    // registra movimentação de entrada
-    await fetch(`${FB}/estoque_mov.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'entrada',itemId:existente.fireId,itemNome:existente.nome,qtd,quem:'Carolline (Admin)',ts:new Date().toISOString(),obs:'Reposição de estoque'})});
-    flashEst(`Reposição de +${qtd} ${unid||'un.'} adicionada a "${nome}".`,'ok','✅');
-  } else {
-    const res = await fetch(`${FB}/estoque_items.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,unid,qtd,min,emoji,criadoEm:new Date().toISOString()})});
-    const data = await res.json();
-    // registra movimentação de entrada
-    await fetch(`${FB}/estoque_mov.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'entrada',itemId:data.name,itemNome:nome,qtd,quem:'Carolline (Admin)',ts:new Date().toISOString(),obs:'Cadastro inicial'})});
-    flashEst(`Item "${nome}" cadastrado com ${qtd} ${unid||'un.'} no estoque!`,'ok','✅');
+  try{
+    const existente = itenEstoque.find(i=>i.nome.toLowerCase()===nome.toLowerCase());
+    if(existente){
+      const novaQtd = (existente.qtd||0) + qtd;
+      const r1=await fetch(`${FB}/estoque_items/${existente.fireId}.json`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({qtd:novaQtd})});
+      if(!r1.ok) throw new Error('HTTP '+r1.status);
+      await fetch(`${FB}/estoque_mov.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'entrada',itemId:existente.fireId,itemNome:existente.nome,qtd,quem:'Carolline (Admin)',ts:new Date().toISOString(),obs:'Reposição de estoque'})});
+      flashEst(`Reposição de +${qtd} ${unid||'un.'} adicionada a "${nome}".`,'ok','✅');
+    } else {
+      const res = await fetch(`${FB}/estoque_items.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,unid,qtd,min,emoji,criadoEm:new Date().toISOString()})});
+      if(!res.ok) throw new Error('HTTP '+res.status+' — verifique as regras do Firebase');
+      const data = await res.json();
+      await fetch(`${FB}/estoque_mov.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'entrada',itemId:data.name,itemNome:nome,qtd,quem:'Carolline (Admin)',ts:new Date().toISOString(),obs:'Cadastro inicial'})});
+      flashEst(`Item "${nome}" cadastrado com ${qtd} ${unid||'un.'} no estoque!`,'ok','✅');
+    }
+    document.getElementById('estNomeItem').value='';
+    document.getElementById('estUnidItem').value='';
+    document.getElementById('estQtdItem').value='';
+    document.getElementById('estMinItem').value='';
+    document.getElementById('estEmojiItem').value='';
+    carregarEstoque();
+  }catch(e){
+    flashEst(`Erro ao salvar: ${e.message}. Verifique as regras do Firebase (Realtime Database → Regras).`,'err','❌');
   }
-
-  document.getElementById('estNomeItem').value='';
-  document.getElementById('estUnidItem').value='';
-  document.getElementById('estQtdItem').value='';
-  document.getElementById('estMinItem').value='';
-  document.getElementById('estEmojiItem').value='';
-  carregarEstoque();
 }
 
 // ===== MODAL SAÍDA =====
