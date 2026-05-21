@@ -304,7 +304,7 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     <div class="scan-box">
       <div class="scan-title">Código do pedido</div>
       <div class="scan-sub">Aponte o leitor para o código de barras ou digite o número abaixo:</div>
-      <input class="scan-input" id="scan" placeholder="Ex: PD-00123" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="verificarDup()" />
+      <input class="scan-input" id="scan" name="scan_pedido_surf" placeholder="Ex: PD-00123" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="verificarDup()" />
       <div class="dup-aviso" id="dupAviso">
         <span style="font-size:20px;flex-shrink:0">⚠️</span>
         <span id="dupAvisoTxt"></span>
@@ -341,10 +341,6 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     <div class="list-hdr">
       <span class="list-title">Todos os registros</span>
       <span class="badge" id="badge">0</span>
-    </div>
-    <div style="margin-bottom:10px">
-      <button onclick="diagnosticar()" style="width:100%;padding:10px;font-size:13px;font-weight:600;background:#f0f0f0;color:#555;border:1.5px solid #ddd;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif">🔍 Diagnóstico Firebase</button>
-      <div id="diagBox" style="display:none;margin-top:8px;padding:12px;background:#111;color:#0f0;font-family:monospace;font-size:12px;border-radius:10px;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto"></div>
     </div>
     <div id="lista"><div class="loading"><div class="spinner"></div>Carregando registros...</div></div>
   </div>
@@ -526,9 +522,9 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script>
-const FB = 'https://montagem-ed7de-default-rtdb.firebaseio.com';
+const FB = 'https://surfacagem-21091-default-rtdb.firebaseio.com';
 const OPS_SURF = ['Percília','Matheus'];
-const PATHS_BUSCA = ['surfacagem','montagem'];
+const PATHS_BUSCA = ['registros'];
 
 // Admin do estoque
 const ADMIN_EMAIL = 'carolline.bhz@gmail.com';
@@ -567,49 +563,6 @@ function goTab(t){
 }
 
 // ===================== SURFAÇAGEM =====================
-async function diagnosticar(){
-  const box = document.getElementById('diagBox');
-  box.style.display = '';
-  box.textContent = 'Consultando raiz do banco...\n';
-
-  // 1. Verifica a raiz para ver todos os paths existentes
-  try{
-    const r = await fetch(`${FB}.json?shallow=true`);
-    const root = await r.json();
-    box.textContent += `Paths na raiz: ${root ? Object.keys(root).join(', ') : 'NENHUM'}\n\n`;
-
-    if(root){
-      // 2. Para cada path, verifica se tem Percília
-      for(const path of Object.keys(root)){
-        try{
-          const r2 = await fetch(`${FB}/${path}.json?shallow=true`);
-          const shallow = await r2.json();
-          if(!shallow || typeof shallow !== 'object'){ box.textContent += `[${path}] → vazio\n`; continue; }
-          const count = Object.keys(shallow).length;
-          box.textContent += `[${path}] → ${count} registro(s)\n`;
-          // Busca amostra real para ver se tem Percília
-          const r3 = await fetch(`${FB}/${path}.json?orderBy="operador"&equalTo="Percília"&limitToFirst=2`);
-          const sample = await r3.json();
-          if(sample && typeof sample === 'object' && Object.keys(sample).length > 0){
-            box.textContent += `  ✅ TEM PERCÍLIA! Exemplo: ${JSON.stringify(Object.values(sample)[0]).substring(0,100)}\n`;
-          }
-        }catch(e2){ box.textContent += `[${path}] erro: ${e2.message}\n`; }
-      }
-    }
-  }catch(e){
-    box.textContent += `ERRO na raiz: ${e.message}\n`;
-    // Fallback: tenta paths conhecidos diretamente
-    for(const path of ['surfacagem','montagem','surfacagemregistros','registros','services','pedidos']){
-      try{
-        const r2 = await fetch(`${FB}/${path}.json?shallow=true`);
-        const d = await r2.json();
-        box.textContent += `[${path}] → ${d ? Object.keys(d).length+' registros' : 'vazio'}\n`;
-      }catch(e2){}
-    }
-  }
-  box.textContent += '\nFim do diagnóstico.';
-}
-
 async function buscarTodos(){
   try{
     const respostas = await Promise.all(
@@ -626,10 +579,6 @@ async function buscarTodos(){
       if(!data || typeof data !== 'object') return;
       Object.entries(data).forEach(([id, v]) => {
         if(!v || typeof v !== 'object') return;
-        // Inclui se: veio do path surfacagem, OU é operador de surfaçagem em qualquer path
-        const isSurfOp = v.operador && OPS_SURF.includes(v.operador);
-        const isSurfPath = path === 'surfacagem';
-        if(!isSurfOp && !isSurfPath) return;
         const key = `${path}_${id}`;
         if(vistos.has(key)) return;
         vistos.add(key);
@@ -646,6 +595,8 @@ async function buscarTodos(){
 }
 buscarTodos();
 setInterval(buscarTodos, 3000);
+// Garante que o campo scan começa vazio (evita autocomplete do navegador)
+window.addEventListener('load', ()=>{ setTimeout(()=>{ document.getElementById('scan').value=''; }, 100); });
 
 function selOp(nome){op=nome;document.querySelectorAll('.op').forEach(b=>b.classList.remove('sel'));document.getElementById('op-'+nome).classList.add('sel');document.getElementById('scan').focus();verificarDup();}
 document.getElementById('scan').addEventListener('keydown',e=>{if(e.key==='Enter')registrar();});
@@ -674,7 +625,7 @@ async function registrar(){
   if(dups.length>0){const ok=confirm(`⚠️ Atenção!\n\nEste pedido já foi registrado ${dups.length}x por ${op}.\n\nDeseja registrar novamente mesmo assim?`);if(!ok)return;}
   const btn=document.getElementById('btnReg');btn.disabled=true;
   try{
-    const r=await fetch(`${FB}/surfacagem.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido:codigo,operador:op,ts:new Date().toISOString(),setor:'Surfaçagem'})});
+    const r=await fetch(`${FB}/registros.json`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pedido:codigo,operador:op,ts:new Date().toISOString(),setor:'Surfaçagem'})});
     if(!r.ok)throw new Error();
     document.getElementById('scan').value='';
     document.getElementById('scan').classList.remove('dup-warn');
@@ -739,7 +690,7 @@ function renderTudo(){
           <div class="dup-item">
             <span class="dup-item-n">#${i+1}</span>
             <span class="dup-item-dt">${fmtDt(item.ts)} às ${fmtHr(item.ts)}</span>
-            <button class="dup-item-del" onclick="remover('${item.fireId}','${item._path||'surfacagem'}')">✕</button>
+            <button class="dup-item-del" onclick="remover('${item.fireId}','${item._path||'registros'}')">✕</button>
           </div>`).join('')}
       </div>`;
     }).join('');
@@ -760,7 +711,7 @@ function renderTudo(){
         <div class="item-nome">${r.operador}</div>
         <div class="item-dt">${fmtDt(r.ts)} às ${fmtHr(r.ts)}</div>
       </div>
-      <button class="item-del" onclick="remover('${r.fireId}','${r._path||'surfacagem'}')">✕</button>
+      <button class="item-del" onclick="remover('${r.fireId}','${r._path||'registros'}')">✕</button>
     </div>`;
   }).join('');
   verificarDup();
