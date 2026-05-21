@@ -344,7 +344,7 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     </div>
     <div style="margin-bottom:10px">
       <button onclick="diagnosticar()" style="width:100%;padding:10px;font-size:13px;font-weight:600;background:#f0f0f0;color:#555;border:1.5px solid #ddd;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif">🔍 Diagnóstico Firebase</button>
-      <div id="diagBox" style="display:none;margin-top:8px;padding:12px;background:#111;color:#0f0;font-family:monospace;font-size:12px;border-radius:10px;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto"></div>
+      <div id="diagBox" style="display:none;margin-top:8px;padding:12px;background:#111;color:#0f0;font-family:monospace;font-size:12px;border-radius:10px;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto"></div>
     </div>
     <div id="lista"><div class="loading"><div class="spinner"></div>Carregando registros...</div></div>
   </div>
@@ -570,23 +570,44 @@ function goTab(t){
 async function diagnosticar(){
   const box = document.getElementById('diagBox');
   box.style.display = '';
-  box.textContent = 'Consultando Firebase...\n';
-  for(const path of PATHS_BUSCA){
-    try{
-      const r = await fetch(`${FB}/${path}.json`);
-      const data = await r.json();
-      if(!data){ box.textContent += `[${path}] → VAZIO (null)\n`; continue; }
-      const keys = Object.keys(data);
-      box.textContent += `[${path}] → ${keys.length} chave(s)\n`;
-      // mostra os 2 primeiros registros
-      keys.slice(0,2).forEach(k=>{
-        const v = data[k];
-        box.textContent += `  ${k}: ${JSON.stringify(v).substring(0,120)}\n`;
-      });
-    }catch(e){
-      box.textContent += `[${path}] → ERRO: ${e.message}\n`;
+  box.textContent = 'Consultando raiz do banco...\n';
+
+  // 1. Verifica a raiz para ver todos os paths existentes
+  try{
+    const r = await fetch(`${FB}.json?shallow=true`);
+    const root = await r.json();
+    box.textContent += `Paths na raiz: ${root ? Object.keys(root).join(', ') : 'NENHUM'}\n\n`;
+
+    if(root){
+      // 2. Para cada path, verifica se tem Percília
+      for(const path of Object.keys(root)){
+        try{
+          const r2 = await fetch(`${FB}/${path}.json?shallow=true`);
+          const shallow = await r2.json();
+          if(!shallow || typeof shallow !== 'object'){ box.textContent += `[${path}] → vazio\n`; continue; }
+          const count = Object.keys(shallow).length;
+          box.textContent += `[${path}] → ${count} registro(s)\n`;
+          // Busca amostra real para ver se tem Percília
+          const r3 = await fetch(`${FB}/${path}.json?orderBy="operador"&equalTo="Percília"&limitToFirst=2`);
+          const sample = await r3.json();
+          if(sample && typeof sample === 'object' && Object.keys(sample).length > 0){
+            box.textContent += `  ✅ TEM PERCÍLIA! Exemplo: ${JSON.stringify(Object.values(sample)[0]).substring(0,100)}\n`;
+          }
+        }catch(e2){ box.textContent += `[${path}] erro: ${e2.message}\n`; }
+      }
+    }
+  }catch(e){
+    box.textContent += `ERRO na raiz: ${e.message}\n`;
+    // Fallback: tenta paths conhecidos diretamente
+    for(const path of ['surfacagem','montagem','surfacagemregistros','registros','services','pedidos']){
+      try{
+        const r2 = await fetch(`${FB}/${path}.json?shallow=true`);
+        const d = await r2.json();
+        box.textContent += `[${path}] → ${d ? Object.keys(d).length+' registros' : 'vazio'}\n`;
+      }catch(e2){}
     }
   }
+  box.textContent += '\nFim do diagnóstico.';
 }
 
 async function buscarTodos(){
@@ -594,7 +615,7 @@ async function buscarTodos(){
     const respostas = await Promise.all(
       PATHS_BUSCA.map(path =>
         fetch(`${FB}/${path}.json`)
-          .then(r => { if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+          .then(r => r.ok ? r.json() : null)
           .catch(()=>null)
       )
     );
@@ -604,17 +625,11 @@ async function buscarTodos(){
       const path = PATHS_BUSCA[idx];
       if(!data || typeof data !== 'object') return;
       Object.entries(data).forEach(([id, v]) => {
-        // ignora valores primitivos (string/number) ou nulos
         if(!v || typeof v !== 'object') return;
-        // Do path surfacagem: aceita QUALQUER registro que tenha ao menos ts ou pedido
-        if(path === 'surfacagem'){
-          if(!v.ts && !v.pedido) return; // só rejeita se não tiver absolutamente nada
-        } else {
-          // De outros paths: só inclui operadores de surfaçagem
-          const isSurfOp  = v.operador && OPS_SURF.includes(v.operador);
-          const isSurfSetor = v.setor && v.setor.toLowerCase().includes('surf');
-          if(!isSurfOp && !isSurfSetor) return;
-        }
+        // Inclui se: veio do path surfacagem, OU é operador de surfaçagem em qualquer path
+        const isSurfOp = v.operador && OPS_SURF.includes(v.operador);
+        const isSurfPath = path === 'surfacagem';
+        if(!isSurfOp && !isSurfPath) return;
         const key = `${path}_${id}`;
         if(vistos.has(key)) return;
         vistos.add(key);
@@ -622,7 +637,7 @@ async function buscarTodos(){
       });
     });
     registros = todos.sort((a,b)=>(b.ts||'').localeCompare(a.ts||''));
-    setStatus('on',`Conectado — ${registros.length} registro(s)`);
+    setStatus('on','Conectado — ao vivo');
     renderTudo();
     atualizaStats();
   }catch(e){
