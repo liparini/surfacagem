@@ -298,6 +298,11 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
         <div class="op-name">Matheus</div><div class="op-sub">Operador</div>
         <div class="op-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       </button>
+      <button class="op" onclick="selOp('Darla')" id="op-Darla" style="grid-column:1/-1">
+        <div class="op-avatar" style="background:#EDE9FE;color:#5B21B6">DA</div>
+        <div class="op-name">Darla</div><div class="op-sub">Operadora</div>
+        <div class="op-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </button>
     </div>
 
     <div class="sec-label">2. Bipe o pedido e registre</div>
@@ -357,6 +362,7 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
             <option value="">Todos os operadores</option>
             <option>Percília</option>
             <option>Matheus</option>
+            <option>Darla</option>
           </select>
         </div>
       </div>
@@ -526,7 +532,7 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script>
 const FB = 'https://surfacagem-21091-default-rtdb.firebaseio.com';
-const OPS_SURF = ['Percília','Matheus'];
+const OPS_SURF = ['Percília','Matheus','Darla'];
 const PATHS_BUSCA = ['registros'];
 
 // Admin do estoque
@@ -667,9 +673,9 @@ function atualizaStats(){
 }
 
 function avatarStyle(op){
-  const c={Percília:'#993556',Matheus:'#0F6E56'};
-  const bg={Percília:'#FBEAF0',Matheus:'#E1F5EE'};
-  const ini={Percília:'PE',Matheus:'MA'};
+  const c={Percília:'#993556',Matheus:'#0F6E56',Darla:'#5B21B6'};
+  const bg={Percília:'#FBEAF0',Matheus:'#E1F5EE',Darla:'#EDE9FE'};
+  const ini={Percília:'PE',Matheus:'MA',Darla:'DA'};
   return{cor:c[op]||'#555',bg:bg[op]||'#eee',ini:ini[op]||(op||'?').substring(0,2).toUpperCase()};
 }
 
@@ -752,15 +758,17 @@ function buscar(){
   } else {
     const percDup=dupPorOp['Percília']||0;
     const mathDup=dupPorOp['Matheus']||0;
+    const darlaDup=dupPorOp['Darla']||0;
     html+=`<div class="rpt-dup-resumo">
       <div class="rpt-dup-resumo-header">
         <div class="rpt-dup-resumo-title"><span style="font-size:18px">⚠️</span> Resumo de duplicidades do período</div>
         <div class="rpt-dup-resumo-sub">Pedidos registrados mais de uma vez pelo mesmo operador</div>
       </div>
       <div class="rpt-dup-body">
-        <div class="rpt-dup-stats">
+        <div class="rpt-dup-stats" style="grid-template-columns:repeat(3,minmax(0,1fr))">
           <div class="rpt-dup-stat"><div class="rpt-dup-stat-n">${percDup}</div><div class="rpt-dup-stat-op">Percília</div><div class="rpt-dup-stat-l">registro(s) duplicado(s)</div></div>
           <div class="rpt-dup-stat"><div class="rpt-dup-stat-n">${mathDup}</div><div class="rpt-dup-stat-op">Matheus</div><div class="rpt-dup-stat-l">registro(s) duplicado(s)</div></div>
+          <div class="rpt-dup-stat"><div class="rpt-dup-stat-n">${darlaDup}</div><div class="rpt-dup-stat-op">Darla</div><div class="rpt-dup-stat-l">registro(s) duplicado(s)</div></div>
         </div>
         <div class="rpt-dup-list-title">Lista de pedidos com duplicidade</div>
         ${grupos.map(g=>{
