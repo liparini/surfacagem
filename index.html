@@ -566,18 +566,25 @@ function goTab(t){
 async function buscarTodos(){
   try{
     const respostas = await Promise.all(
-      PATHS_BUSCA.map(path => fetch(`${FB}/${path}.json`).then(r=>r.ok?r.json():null).catch(()=>null))
+      PATHS_BUSCA.map(path =>
+        fetch(`${FB}/${path}.json`)
+          .then(r => { if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+          .catch(()=>null)
+      )
     );
     const vistos = new Set();
     let todos = [];
     respostas.forEach((data, idx) => {
       const path = PATHS_BUSCA[idx];
-      if(!data) return;
+      if(!data || typeof data !== 'object') return;
       Object.entries(data).forEach(([id, v]) => {
-        if(!v || !v.operador || !v.ts) return;
-        const isSurfOp = OPS_SURF.includes(v.operador);
+        if(!v || typeof v !== 'object' || !v.ts) return;
+        const isSurfOp  = v.operador && OPS_SURF.includes(v.operador);
         const isSurfPath = path === 'surfacagem';
-        if(!isSurfOp && !isSurfPath) return;
+        const isSurfSetor = v.setor && v.setor.toLowerCase().includes('surf');
+        // Do path montagem, só inclui se for operador de surfaçagem ou tiver setor surfaçagem
+        if(path === 'montagem' && !isSurfOp && !isSurfSetor) return;
+        // Do path surfacagem, inclui tudo que tiver ts (são todos registros válidos)
         const key = `${path}_${id}`;
         if(vistos.has(key)) return;
         vistos.add(key);
@@ -585,7 +592,7 @@ async function buscarTodos(){
       });
     });
     registros = todos.sort((a,b)=>b.ts.localeCompare(a.ts));
-    setStatus('on','Conectado — ao vivo');
+    setStatus('on',`Conectado — ${registros.length} registro(s)`);
     renderTudo();
     atualizaStats();
   }catch(e){
