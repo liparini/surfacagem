@@ -304,7 +304,7 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     <div class="scan-box">
       <div class="scan-title">Código do pedido</div>
       <div class="scan-sub">Aponte o leitor para o código de barras ou digite o número abaixo:</div>
-      <input class="scan-input" id="scan" placeholder="Ex: PD-00123" autocomplete="off" oninput="verificarDup()" />
+      <input class="scan-input" id="scan" placeholder="Ex: PD-00123" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="verificarDup()" />
       <div class="dup-aviso" id="dupAviso">
         <span style="font-size:20px;flex-shrink:0">⚠️</span>
         <span id="dupAvisoTxt"></span>
@@ -341,6 +341,10 @@ input[type=date]:focus,select:focus{border-color:#EF9F27}
     <div class="list-hdr">
       <span class="list-title">Todos os registros</span>
       <span class="badge" id="badge">0</span>
+    </div>
+    <div style="margin-bottom:10px">
+      <button onclick="diagnosticar()" style="width:100%;padding:10px;font-size:13px;font-weight:600;background:#f0f0f0;color:#555;border:1.5px solid #ddd;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif">🔍 Diagnóstico Firebase</button>
+      <div id="diagBox" style="display:none;margin-top:8px;padding:12px;background:#111;color:#0f0;font-family:monospace;font-size:12px;border-radius:10px;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto"></div>
     </div>
     <div id="lista"><div class="loading"><div class="spinner"></div>Carregando registros...</div></div>
   </div>
@@ -563,6 +567,28 @@ function goTab(t){
 }
 
 // ===================== SURFAÇAGEM =====================
+async function diagnosticar(){
+  const box = document.getElementById('diagBox');
+  box.style.display = '';
+  box.textContent = 'Consultando Firebase...\n';
+  for(const path of PATHS_BUSCA){
+    try{
+      const r = await fetch(`${FB}/${path}.json`);
+      const data = await r.json();
+      if(!data){ box.textContent += `[${path}] → VAZIO (null)\n`; continue; }
+      const keys = Object.keys(data);
+      box.textContent += `[${path}] → ${keys.length} chave(s)\n`;
+      // mostra os 2 primeiros registros
+      keys.slice(0,2).forEach(k=>{
+        const v = data[k];
+        box.textContent += `  ${k}: ${JSON.stringify(v).substring(0,120)}\n`;
+      });
+    }catch(e){
+      box.textContent += `[${path}] → ERRO: ${e.message}\n`;
+    }
+  }
+}
+
 async function buscarTodos(){
   try{
     const respostas = await Promise.all(
@@ -578,20 +604,24 @@ async function buscarTodos(){
       const path = PATHS_BUSCA[idx];
       if(!data || typeof data !== 'object') return;
       Object.entries(data).forEach(([id, v]) => {
-        if(!v || typeof v !== 'object' || !v.ts) return;
-        const isSurfOp  = v.operador && OPS_SURF.includes(v.operador);
-        const isSurfPath = path === 'surfacagem';
-        const isSurfSetor = v.setor && v.setor.toLowerCase().includes('surf');
-        // Do path montagem, só inclui se for operador de surfaçagem ou tiver setor surfaçagem
-        if(path === 'montagem' && !isSurfOp && !isSurfSetor) return;
-        // Do path surfacagem, inclui tudo que tiver ts (são todos registros válidos)
+        // ignora valores primitivos (string/number) ou nulos
+        if(!v || typeof v !== 'object') return;
+        // Do path surfacagem: aceita QUALQUER registro que tenha ao menos ts ou pedido
+        if(path === 'surfacagem'){
+          if(!v.ts && !v.pedido) return; // só rejeita se não tiver absolutamente nada
+        } else {
+          // De outros paths: só inclui operadores de surfaçagem
+          const isSurfOp  = v.operador && OPS_SURF.includes(v.operador);
+          const isSurfSetor = v.setor && v.setor.toLowerCase().includes('surf');
+          if(!isSurfOp && !isSurfSetor) return;
+        }
         const key = `${path}_${id}`;
         if(vistos.has(key)) return;
         vistos.add(key);
         todos.push({...v, fireId:id, _path:path});
       });
     });
-    registros = todos.sort((a,b)=>b.ts.localeCompare(a.ts));
+    registros = todos.sort((a,b)=>(b.ts||'').localeCompare(a.ts||''));
     setStatus('on',`Conectado — ${registros.length} registro(s)`);
     renderTudo();
     atualizaStats();
